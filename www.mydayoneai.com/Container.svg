@@ -1,0 +1,19 @@
+<svg width="1320" height="376" viewBox="0 0 1320 376" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1320" height="375.144" rx="33.11" fill="url(#paint0_linear_68_432)" fill-opacity="0.08"/>
+<rect opacity="0.999981" x="7.83521" y="0.0844727" width="1306.21" height="374.965" rx="27.1543" fill="white" fill-opacity="0.05"/>
+<g opacity="0.119998">
+<path d="M1312.45 54.6182C1281.51 108.891 1130.29 216.908 917.296 168.299C618.692 100.155 571.993 118.494 431.635 237.89C373.419 287.41 242.223 345.727 8.48926 305.089" stroke="#CE3A79" stroke-width="3.78508" stroke-dasharray="9.46 9.46"/>
+</g>
+<rect opacity="0.999981" x="112.281" y="47.1431" width="30.1714" height="30.1714" rx="15.0857" fill="#70319F"/>
+<rect opacity="0.899983" x="46.7468" y="246.236" width="80.1429" height="80.1429" rx="40.0714" fill="#CE3A79"/>
+<rect opacity="0.999981" x="295.029" y="218.29" width="44.3143" height="44.3143" rx="22.1571" fill="#70319F"/>
+<rect opacity="0.899983" x="1209" y="62" width="18.8571" height="18.8571" rx="9.42857" fill="#CE3A79"/>
+<rect opacity="0.999981" x="1193.24" y="193.776" width="68.8286" height="68.8286" rx="34.4143" fill="#70319F"/>
+<rect opacity="0.999981" x="1031.17" y="295.256" width="34.8857" height="34.8857" rx="17.4429" fill="#70319F"/>
+<defs>
+<linearGradient id="paint0_linear_68_432" x1="0" y1="187.572" x2="1320" y2="187.572" gradientUnits="userSpaceOnUse">
+<stop stop-color="#CC2B5E"/>
+<stop offset="1" stop-color="#753A88"/>
+</linearGradient>
+</defs>
+</svg>
