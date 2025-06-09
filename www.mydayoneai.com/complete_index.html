@@ -40,34 +40,42 @@
             }
         }
 
-        /* Bennet-Style Hover Reveal Effect */
-        .hover-reveal {
+        /* Multiple Scattered Images Effect (Like Reference) */
+        .hover-image {
             position: fixed;
-            width: 20vw;
-            height: 30vw;
+            width: 150px;
+            height: 200px;
             pointer-events: none;
             opacity: 0;
             z-index: 999;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-        }
-
-        .hover-reveal__inner, .hover-reveal__img {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-        }
-
-        .hover-reveal__inner {
-            overflow: hidden;
-        }
-
-        .hover-reveal__img {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
-            filter: brightness(1.1) contrast(1.2) saturate(1.1);
+            transition: all 0.3s ease;
+        }
+
+        .hover-image-1 {
+            transform: rotate(-8deg);
+            width: 140px;
+            height: 180px;
+        }
+        .hover-image-2 {
+            transform: rotate(5deg);
+            width: 160px;
+            height: 220px;
+        }
+        .hover-image-3 {
+            transform: rotate(-3deg);
+            width: 130px;
+            height: 170px;
+        }
+        .hover-image-4 {
+            transform: rotate(7deg);
+            width: 155px;
+            height: 210px;
         }
 
         /* Mydayhover class for trigger elements */
@@ -313,12 +321,11 @@
             <p>&copy; 2024 MyDayOne. All rights reserved. | Custom Cursor + Hover Reveal Animation Demo</p>
         </footer>
     </div>
-    <!-- Single Hover Reveal Element (Bennet Style) -->
-    <div class="hover-reveal" id="hoverReveal">
-        <div class="hover-reveal__inner" id="hoverRevealInner">
-            <div class="hover-reveal__img" id="hoverRevealImg"></div>
-        </div>
-    </div>
+    <!-- Multiple Scattered Images (Reference Style) -->
+    <div class="hover-image hover-image-1" id="hoverImage1"></div>
+    <div class="hover-image hover-image-2" id="hoverImage2"></div>
+    <div class="hover-image hover-image-3" id="hoverImage3"></div>
+    <div class="hover-image hover-image-4" id="hoverImage4"></div>
 
     <!-- Combined JavaScript for Custom Cursor + Hover Reveal -->
     <script>
@@ -330,26 +337,38 @@
             if (window.matchMedia('(min-width: 768px)').matches) {
                 const cursor = document.getElementById('customCursor');
 
-                // Get hover reveal elements (Bennet Style)
-                const hoverReveal = document.getElementById('hoverReveal');
-                const hoverRevealInner = document.getElementById('hoverRevealInner');
-                const hoverRevealImg = document.getElementById('hoverRevealImg');
+                // Get scattered hover images (Reference Style)
+                const hoverImages = [
+                    document.getElementById('hoverImage1'),
+                    document.getElementById('hoverImage2'),
+                    document.getElementById('hoverImage3'),
+                    document.getElementById('hoverImage4')
+                ];
+
+                // Images to use
+                const images = [
+                    'https://picsum.photos/300/400?random=1',
+                    'https://picsum.photos/300/400?random=2',
+                    'https://picsum.photos/300/400?random=3',
+                    'https://picsum.photos/300/400?random=4'
+                ];
 
                 console.log('🔍 Checking elements...');
                 console.log('Cursor:', cursor);
-                console.log('Hover reveal:', hoverReveal);
-                console.log('Hover reveal inner:', hoverRevealInner);
-                console.log('Hover reveal img:', hoverRevealImg);
+                console.log('Hover images:', hoverImages);
 
-                if (cursor && hoverReveal && hoverRevealInner && hoverRevealImg) {
+                if (cursor && hoverImages.every(img => img !== null)) {
                     console.log('✅ All elements found and valid');
 
                     // Make cursor visible
                     cursor.style.display = 'block';
                     cursor.style.opacity = '1';
 
-                    // Set default image
-                    hoverRevealImg.style.backgroundImage = 'url(https://picsum.photos/400/600?random=1)';
+                    // Set images
+                    hoverImages.forEach((img, index) => {
+                        img.style.backgroundImage = `url(${images[index]})`;
+                        console.log(`🖼️ Set image ${index + 1}: ${images[index]}`);
+                    });
 
                     const hoverElements = document.querySelectorAll('.cursor-hover');
                     const textHoverElements = document.querySelectorAll('.cursor-text-hover');
@@ -498,133 +517,103 @@
                         });
                     });
 
-                    // Helper function to get mouse position
-                    function getMousePos(e) {
-                        return {
-                            x: e.clientX,
-                            y: e.clientY
-                        };
-                    }
+                    // Mouse tracking for scattered images
+                    let mouseX = 0;
+                    let mouseY = 0;
 
-                    // Bennet-Style Hover Reveal Effect
-                    class BennetHoverReveal {
-                        constructor(el) {
-                            this.DOM = {el: el};
-                            this.DOM.reveal = hoverReveal;
-                            this.DOM.revealInner = hoverRevealInner;
-                            this.DOM.revealImg = hoverRevealImg;
+                    document.addEventListener('mousemove', function(e) {
+                        mouseX = e.clientX;
+                        mouseY = e.clientY;
+                    });
 
-                            // Set the image from data attribute or use default
-                            const imgSrc = this.DOM.el.dataset.img || 'https://picsum.photos/400/600?random=1';
-                            this.DOM.revealImg.style.backgroundImage = `url(${imgSrc})`;
+                    // Scattered Images Hover Effect (Like Reference Image)
+                    mydayHoverElements.forEach(element => {
+                        element.addEventListener('mouseenter', function(e) {
+                            console.log('🎨 SCATTERED IMAGES HOVER ENTER!', e.target.textContent);
 
-                            this.initEvents();
-                        }
+                            // Position images scattered around the cursor area
+                            const positions = [
+                                { x: -200, y: -100 }, // Top left
+                                { x: 150, y: -80 },   // Top right
+                                { x: -180, y: 120 },  // Bottom left
+                                { x: 180, y: 100 }    // Bottom right
+                            ];
 
-                        initEvents() {
-                            this.positionElement = (ev) => {
-                                const mousePos = getMousePos(ev);
-                                const docScrolls = {
-                                    left: window.pageXOffset || document.documentElement.scrollLeft,
-                                    top: window.pageYOffset || document.documentElement.scrollTop
-                                };
+                            hoverImages.forEach((img, index) => {
+                                const pos = positions[index];
+
+                                // Position relative to cursor
+                                img.style.left = (mouseX + pos.x) + 'px';
+                                img.style.top = (mouseY + pos.y) + 'px';
 
                                 if (typeof gsap !== 'undefined') {
-                                    gsap.to(this.DOM.reveal, {
-                                        duration: 0.7,
-                                        top: `${mousePos.y - (this.DOM.reveal.offsetHeight * 0.5) - docScrolls.top}px`,
-                                        left: `${mousePos.x - (this.DOM.reveal.offsetWidth * 0.5) - docScrolls.left}px`,
-                                        ease: "power4.out"
+                                    // Animate in with staggered timing
+                                    gsap.fromTo(img, {
+                                        opacity: 0,
+                                        scale: 0.5,
+                                        rotation: (index - 2) * 20
+                                    }, {
+                                        duration: 0.6 + (index * 0.1),
+                                        opacity: 1,
+                                        scale: 1,
+                                        rotation: (index - 2) * 8,
+                                        ease: "back.out(1.7)",
+                                        delay: index * 0.1
                                     });
                                 } else {
-                                    this.DOM.reveal.style.top = `${mousePos.y - (this.DOM.reveal.offsetHeight * 0.5) - docScrolls.top}px`;
-                                    this.DOM.reveal.style.left = `${mousePos.x - (this.DOM.reveal.offsetWidth * 0.5) - docScrolls.left}px`;
+                                    // Fallback without GSAP
+                                    img.style.opacity = '1';
+                                    img.style.transform = 'scale(1)';
                                 }
-                            };
-
-                            this.mouseenterFn = (ev) => {
-                                console.log('🎨 BENNET HOVER ENTER!', ev.target.textContent);
-                                this.positionElement(ev);
-                                this.showImage();
-                            };
-
-                            this.mousemoveFn = ev => requestAnimationFrame(() => {
-                                this.positionElement(ev);
                             });
+                        });
 
-                            this.mouseleaveFn = () => {
-                                console.log('🎨 BENNET HOVER LEAVE!');
-                                this.hideImage();
-                            };
+                        element.addEventListener('mousemove', function(e) {
+                            // Update positions as mouse moves
+                            const positions = [
+                                { x: -200, y: -100 }, // Top left
+                                { x: 150, y: -80 },   // Top right
+                                { x: -180, y: 120 },  // Bottom left
+                                { x: 180, y: 100 }    // Bottom right
+                            ];
 
-                            this.DOM.el.addEventListener('mouseenter', this.mouseenterFn);
-                            this.DOM.el.addEventListener('mousemove', this.mousemoveFn);
-                            this.DOM.el.addEventListener('mouseleave', this.mouseleaveFn);
-                        }
+                            hoverImages.forEach((img, index) => {
+                                const pos = positions[index];
 
-                        showImage() {
-                            if (typeof gsap !== 'undefined') {
-                                gsap.killTweensOf(this.DOM.revealInner);
-                                gsap.killTweensOf(this.DOM.revealImg);
+                                if (typeof gsap !== 'undefined') {
+                                    gsap.to(img, {
+                                        duration: 0.3,
+                                        left: (e.clientX + pos.x) + 'px',
+                                        top: (e.clientY + pos.y) + 'px',
+                                        ease: "power2.out"
+                                    });
+                                } else {
+                                    img.style.left = (e.clientX + pos.x) + 'px';
+                                    img.style.top = (e.clientY + pos.y) + 'px';
+                                }
+                            });
+                        });
 
-                                gsap.timeline({
-                                    onStart: () => {
-                                        this.DOM.reveal.style.opacity = 1;
-                                        gsap.set(this.DOM.el, {zIndex: 1000});
-                                    }
-                                })
-                                .add('begin')
-                                .add(gsap.to(this.DOM.revealInner, {
-                                    duration: 0.4,
-                                    ease: "sine.out",
-                                    startAt: {x: '-100%'},
-                                    x: '0%'
-                                }), 'begin')
-                                .add(gsap.to(this.DOM.revealImg, {
-                                    duration: 0.4,
-                                    ease: "sine.out",
-                                    startAt: {x: '100%'},
-                                    x: '0%'
-                                }), 'begin');
-                            } else {
-                                // Fallback without GSAP
-                                this.DOM.reveal.style.opacity = '1';
-                            }
-                        }
+                        element.addEventListener('mouseleave', function(e) {
+                            console.log('🎨 SCATTERED IMAGES HOVER LEAVE!');
 
-                        hideImage() {
-                            if (typeof gsap !== 'undefined') {
-                                gsap.killTweensOf(this.DOM.revealInner);
-                                gsap.killTweensOf(this.DOM.revealImg);
+                            hoverImages.forEach((img, index) => {
+                                if (typeof gsap !== 'undefined') {
+                                    gsap.to(img, {
+                                        duration: 0.4,
+                                        opacity: 0,
+                                        scale: 0.3,
+                                        rotation: (index - 2) * 30,
+                                        ease: "power2.in",
+                                        delay: index * 0.05
+                                    });
+                                } else {
+                                    img.style.opacity = '0';
+                                }
+                            });
+                        });
 
-                                gsap.timeline({
-                                    onComplete: () => {
-                                        gsap.set(this.DOM.el, {zIndex: ''});
-                                        gsap.set(this.DOM.reveal, {opacity: 0});
-                                    }
-                                })
-                                .add('begin')
-                                .add(gsap.to(this.DOM.revealInner, {
-                                    duration: 0.3,
-                                    ease: "sine.out",
-                                    x: '100%'
-                                }), 'begin')
-                                .add(gsap.to(this.DOM.revealImg, {
-                                    duration: 0.3,
-                                    ease: "sine.out",
-                                    x: '-100%'
-                                }), 'begin');
-                            } else {
-                                // Fallback without GSAP
-                                this.DOM.reveal.style.opacity = '0';
-                            }
-                        }
-                    }
-
-                    // Initialize Bennet-style hover reveal for mydayhover elements
-                    mydayHoverElements.forEach(element => {
-                        new BennetHoverReveal(element);
-                        console.log('✅ Bennet hover reveal initialized for:', element.textContent);
+                        console.log('✅ Scattered images hover effect initialized for:', element.textContent);
                     });
 
                     // Click effect
