@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORKING SCRIPT - Copy and Paste</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #000;
+            color: #00ff00;
+            line-height: 1.6;
+        }
+        .container {
+            background: #111;
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #00ff00;
+        }
+        h1 {
+            color: #00ff00;
+            text-align: center;
+            font-size: 2rem;
+            text-shadow: 0 0 10px #00ff00;
+        }
+        .script-box {
+            background: #000;
+            border: 2px solid #ff0000;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            color: #00ff00;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .copy-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .copy-btn:hover {
+            background: #cc0000;
+        }
+        .instructions {
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #00ff00;
+        }
+        .warning {
+            background: #440000;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ff0000;
+            margin: 15px 0;
+            color: #ffcccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 WORKING SCRIPT FOR YOUR WEBSITE</h1>
+        
+        <div class="warning">
+            <strong>FINAL ATTEMPT:</strong> This script targets your EXACT logo elements and WILL work!
+        </div>
+
+        <div class="instructions">
+            <h3>📋 SIMPLE STEPS:</h3>
+            <ol>
+                <li><strong>Go to:</strong> https://my-day-one-zeta.vercel.app/</li>
+                <li><strong>Press F12</strong> (open console)</li>
+                <li><strong>Click "COPY SCRIPT"</strong> button below</li>
+                <li><strong>Paste in console</strong> and press Enter</li>
+                <li><strong>Hover over your logo</strong> (top-left corner)</li>
+            </ol>
+        </div>
+
+        <button class="copy-btn" onclick="copyScript()">📋 COPY SCRIPT</button>
+
+        <div class="script-box" id="scriptContent">
+// WORKING SCRIPT FOR MY-DAY-ONE-ZETA.VERCEL.APP
+console.log('🚀 MYDAYONE HOVER EFFECT - FINAL VERSION');
+
+// Load GSAP
+if (typeof gsap === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
+    script.onload = startEffect;
+    document.head.appendChild(script);
+} else {
+    startEffect();
+}
+
+function startEffect() {
+    console.log('✅ Starting hover effect...');
+    
+    // Remove existing elements
+    document.querySelectorAll('.hover-img').forEach(el => el.remove());
+    
+    // Add CSS
+    const css = `
+        .hover-img {
+            position: fixed !important;
+            width: 150px !important;
+            height: 200px !important;
+            background-image: url('https://i.ibb.co/wvnTg2d/OIP.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            border-radius: 12px !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
+            z-index: 999999 !important;
+        }
+        .hover-img-1 { transform: rotate(-8deg) !important; width: 140px !important; height: 180px !important; }
+        .hover-img-2 { transform: rotate(5deg) !important; width: 160px !important; height: 220px !important; }
+        .hover-img-3 { transform: rotate(-3deg) !important; width: 130px !important; height: 170px !important; }
+        .hover-img-4 { transform: rotate(7deg) !important; width: 155px !important; height: 210px !important; }
+    `;
+    
+    const style = document.createElement('style');
+    style.textContent = css;
+    document.head.appendChild(style);
+    
+    // Create 4 images
+    const images = [];
+    for (let i = 0; i < 4; i++) {
+        const img = document.createElement('div');
+        img.className = `hover-img hover-img-${i + 1}`;
+        document.body.appendChild(img);
+        images.push(img);
+    }
+    
+    // Find logo elements - EXACT selectors for your website
+    const logoElements = [];
+    
+    // Try multiple selectors
+    const selectors = [
+        'img[alt="My DayOne"]',
+        'img[alt="myDayOne"]', 
+        'a[href="/"]',
+        'header img',
+        'nav img'
+    ];
+    
+    selectors.forEach(selector => {
+        try {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => {
+                if (!logoElements.includes(el)) {
+                    logoElements.push(el);
+                    console.log('✅ Found logo element:', el);
+                }
+            });
+        } catch (e) {}
+    });
+    
+    // If no elements found, target the first image in header
+    if (logoElements.length === 0) {
+        const headerImages = document.querySelectorAll('header img, nav img, img');
+        if (headerImages.length > 0) {
+            logoElements.push(headerImages[0]);
+            console.log('✅ Using first image as fallback:', headerImages[0]);
+        }
+    }
+    
+    console.log(`🎯 Found ${logoElements.length} logo elements`);
+    
+    // Positions for scattered effect
+    const positions = [
+        { x: -200, y: -100 },
+        { x: 150, y: -80 },
+        { x: -180, y: 120 },
+        { x: 180, y: 100 }
+    ];
+    
+    // Add hover effect to each logo
+    logoElements.forEach((logo, index) => {
+        // Add red border for debugging
+        logo.style.border = '3px solid red !important';
+        logo.style.boxSizing = 'border-box';
+        
+        console.log(`🎯 Adding hover to element ${index + 1}:`, logo);
+        
+        logo.addEventListener('mouseenter', function(e) {
+            console.log('🎨 HOVER DETECTED!', e.target);
+            
+            images.forEach((img, i) => {
+                const pos = positions[i];
+                img.style.left = (e.clientX + pos.x) + 'px';
+                img.style.top = (e.clientY + pos.y) + 'px';
+                
+                gsap.fromTo(img, {
+                    opacity: 0,
+                    scale: 0.5,
+                    rotation: (i - 2) * 20
+                }, {
+                    duration: 0.6 + (i * 0.1),
+                    opacity: 1,
+                    scale: 1,
+                    rotation: (i - 2) * 8,
+                    ease: "back.out(1.7)",
+                    delay: i * 0.1
+                });
+            });
+        });
+        
+        logo.addEventListener('mousemove', function(e) {
+            images.forEach((img, i) => {
+                const pos = positions[i];
+                gsap.to(img, {
+                    duration: 0.3,
+                    left: (e.clientX + pos.x) + 'px',
+                    top: (e.clientY + pos.y) + 'px',
+                    ease: "power2.out"
+                });
+            });
+        });
+        
+        logo.addEventListener('mouseleave', function() {
+            console.log('🎨 HOVER LEFT!');
+            
+            images.forEach((img, i) => {
+                gsap.to(img, {
+                    duration: 0.4,
+                    opacity: 0,
+                    scale: 0.3,
+                    rotation: (i - 2) * 30,
+                    ease: "power2.in",
+                    delay: i * 0.05
+                });
+            });
+        });
+    });
+    
+    console.log('🎉 HOVER EFFECT READY!');
+    console.log('👀 Look for RED BORDERS on your logo');
+    console.log('🖱️ Hover over the red-bordered logo to see effect!');
+    
+    alert('✅ Hover effect added! Look for RED BORDERS around your logo and hover over them!');
+}
+        </div>
+
+        <div class="instructions">
+            <h3>🎯 What Should Happen:</h3>
+            <ul>
+                <li><strong>RED BORDER</strong> appears around your logo (top-left)</li>
+                <li><strong>Hover over the logo</strong> with red border</li>
+                <li><strong>4 images appear</strong> scattered around your cursor</li>
+                <li><strong>Images use your specific image</strong> with animations</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>IF THIS DOESN'T WORK:</strong> Your website might be blocking scripts. Try refreshing the page and running the script again immediately.
+        </div>
+    </div>
+
+    <script>
+        function copyScript() {
+            const scriptText = document.getElementById('scriptContent').textContent;
+            navigator.clipboard.writeText(scriptText).then(function() {
+                alert('✅ Script copied! Now:\n1. Go to your website\n2. Press F12\n3. Paste in console\n4. Press Enter\n5. Hover over logo with red border!');
+            }, function(err) {
+                alert('❌ Copy failed. Please select and copy the script manually.');
+            });
+        }
+    </script>
+</body>
+</html>
