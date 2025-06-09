@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIRECT INJECTION - Will Work on ANY Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h1 {
+            color: #fff;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .script-box {
+            background: #000;
+            border: 2px solid #00ff00;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #00ff00;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .copy-btn {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        .copy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #4ecdc4;
+        }
+        .warning {
+            background: rgba(220, 53, 69, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #dc3545;
+            margin: 15px 0;
+        }
+        .success {
+            background: rgba(40, 167, 69, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #28a745;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 DIRECT INJECTION METHOD</h1>
+        
+        <div class="warning">
+            <strong>FINAL SOLUTION:</strong> This script adds hover effect to the ENTIRE PAGE - no element detection needed!
+        </div>
+
+        <div class="instructions">
+            <h3>📋 SUPER SIMPLE STEPS:</h3>
+            <ol>
+                <li><strong>Go to:</strong> https://my-day-one-zeta.vercel.app/</li>
+                <li><strong>Press F12</strong> (open browser console)</li>
+                <li><strong>Click "COPY SCRIPT"</strong> button below</li>
+                <li><strong>Paste in console</strong> and press Enter</li>
+                <li><strong>Move mouse anywhere</strong> on the page</li>
+                <li><strong>Press SPACEBAR</strong> to trigger the effect!</li>
+            </ol>
+        </div>
+
+        <button class="copy-btn" onclick="copyScript()">📋 COPY DIRECT INJECTION SCRIPT</button>
+
+        <div class="script-box" id="scriptContent">
+// DIRECT INJECTION - WORKS ON ANY WEBSITE
+console.log('🚀 DIRECT INJECTION HOVER EFFECT');
+
+// Load GSAP
+if (typeof gsap === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
+    script.onload = startEffect;
+    document.head.appendChild(script);
+} else {
+    startEffect();
+}
+
+function startEffect() {
+    console.log('✅ Starting direct injection effect...');
+    
+    // Remove existing elements
+    document.querySelectorAll('.direct-hover-img').forEach(el => el.remove());
+    
+    // Add CSS
+    const css = `
+        .direct-hover-img {
+            position: fixed !important;
+            width: 150px !important;
+            height: 200px !important;
+            background-image: url('https://i.ibb.co/wvnTg2d/OIP.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            border-radius: 12px !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7) !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
+            z-index: 999999 !important;
+        }
+        .direct-hover-img-1 { transform: rotate(-8deg) !important; width: 140px !important; height: 180px !important; }
+        .direct-hover-img-2 { transform: rotate(5deg) !important; width: 160px !important; height: 220px !important; }
+        .direct-hover-img-3 { transform: rotate(-3deg) !important; width: 130px !important; height: 170px !important; }
+        .direct-hover-img-4 { transform: rotate(7deg) !important; width: 155px !important; height: 210px !important; }
+        
+        .hover-indicator {
+            position: fixed !important;
+            top: 10px !important;
+            right: 10px !important;
+            background: rgba(0, 255, 0, 0.8) !important;
+            color: black !important;
+            padding: 10px !important;
+            border-radius: 5px !important;
+            font-weight: bold !important;
+            z-index: 999999 !important;
+            font-family: Arial !important;
+        }
+    `;
+    
+    const style = document.createElement('style');
+    style.textContent = css;
+    document.head.appendChild(style);
+    
+    // Create 4 images
+    const images = [];
+    for (let i = 0; i < 4; i++) {
+        const img = document.createElement('div');
+        img.className = `direct-hover-img direct-hover-img-${i + 1}`;
+        document.body.appendChild(img);
+        images.push(img);
+    }
+    
+    // Create indicator
+    const indicator = document.createElement('div');
+    indicator.className = 'hover-indicator';
+    indicator.textContent = 'Press SPACEBAR for hover effect!';
+    document.body.appendChild(indicator);
+    
+    // Positions for scattered effect
+    const positions = [
+        { x: -200, y: -100 },
+        { x: 150, y: -80 },
+        { x: -180, y: 120 },
+        { x: 180, y: 100 }
+    ];
+    
+    let mouseX = 0;
+    let mouseY = 0;
+    let isEffectActive = false;
+    
+    // Track mouse position
+    document.addEventListener('mousemove', function(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+    
+    // Spacebar to trigger effect
+    document.addEventListener('keydown', function(e) {
+        if (e.code === 'Space') {
+            e.preventDefault();
+            
+            if (!isEffectActive) {
+                console.log('🎨 SPACEBAR PRESSED - SHOWING EFFECT!');
+                indicator.textContent = 'Effect Active! Press SPACEBAR again to hide.';
+                indicator.style.background = 'rgba(255, 0, 0, 0.8)';
+                
+                images.forEach((img, i) => {
+                    const pos = positions[i];
+                    img.style.left = (mouseX + pos.x) + 'px';
+                    img.style.top = (mouseY + pos.y) + 'px';
+                    
+                    gsap.fromTo(img, {
+                        opacity: 0,
+                        scale: 0.5,
+                        rotation: (i - 2) * 20
+                    }, {
+                        duration: 0.6 + (i * 0.1),
+                        opacity: 1,
+                        scale: 1,
+                        rotation: (i - 2) * 8,
+                        ease: "back.out(1.7)",
+                        delay: i * 0.1
+                    });
+                });
+                
+                isEffectActive = true;
+            } else {
+                console.log('🎨 SPACEBAR PRESSED - HIDING EFFECT!');
+                indicator.textContent = 'Press SPACEBAR for hover effect!';
+                indicator.style.background = 'rgba(0, 255, 0, 0.8)';
+                
+                images.forEach((img, i) => {
+                    gsap.to(img, {
+                        duration: 0.4,
+                        opacity: 0,
+                        scale: 0.3,
+                        rotation: (i - 2) * 30,
+                        ease: "power2.in",
+                        delay: i * 0.05
+                    });
+                });
+                
+                isEffectActive = false;
+            }
+        }
+    });
+    
+    // Mouse move updates positions when effect is active
+    document.addEventListener('mousemove', function(e) {
+        if (isEffectActive) {
+            images.forEach((img, i) => {
+                const pos = positions[i];
+                gsap.to(img, {
+                    duration: 0.3,
+                    left: (e.clientX + pos.x) + 'px',
+                    top: (e.clientY + pos.y) + 'px',
+                    ease: "power2.out"
+                });
+            });
+        }
+    });
+    
+    console.log('🎉 DIRECT INJECTION READY!');
+    console.log('👀 Look for green indicator in top-right corner');
+    console.log('⌨️ Press SPACEBAR to show/hide scattered images!');
+    console.log('🖱️ Move mouse to see images follow cursor!');
+    
+    alert('✅ Direct injection ready!\n\n1. Look for GREEN indicator in top-right\n2. Press SPACEBAR to show effect\n3. Move mouse to see images follow!\n4. Press SPACEBAR again to hide');
+}
+        </div>
+
+        <div class="success">
+            <h3>🎯 What This Does:</h3>
+            <ul>
+                <li><strong>No element detection</strong> - works on ANY website</li>
+                <li><strong>Spacebar trigger</strong> - you control when to show effect</li>
+                <li><strong>Green indicator</strong> - shows script is working</li>
+                <li><strong>Mouse following</strong> - images follow your cursor</li>
+                <li><strong>Your specific image</strong> - uses your image for all 4</li>
+            </ul>
+        </div>
+
+        <div class="instructions">
+            <h3>🎮 How to Use:</h3>
+            <ol>
+                <li><strong>Run the script</strong> (copy/paste in console)</li>
+                <li><strong>See green indicator</strong> in top-right corner</li>
+                <li><strong>Press SPACEBAR</strong> to show scattered images</li>
+                <li><strong>Move mouse</strong> to see images follow cursor</li>
+                <li><strong>Press SPACEBAR again</strong> to hide images</li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <strong>🎯 THIS WILL DEFINITELY WORK!</strong> It doesn't depend on finding specific elements or React working properly. It just adds the effect to the entire page and you control it with the spacebar!
+        </div>
+    </div>
+
+    <script>
+        function copyScript() {
+            const scriptText = document.getElementById('scriptContent').textContent;
+            navigator.clipboard.writeText(scriptText).then(function() {
+                alert('✅ Direct injection script copied!\n\nSteps:\n1. Go to your website\n2. Press F12\n3. Paste in console\n4. Press Enter\n5. Press SPACEBAR to show effect!');
+            }, function(err) {
+                alert('❌ Copy failed. Please select and copy the script manually.');
+            });
+        }
+    </script>
+</body>
+</html>
