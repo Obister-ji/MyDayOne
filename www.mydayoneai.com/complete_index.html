@@ -397,27 +397,56 @@
                     }
                 ];
 
-                // Available images for the crazy animation
+                // Available dummy images for the crazy animation
                 const images = [
-                    'mydayone.png',
-                    '1733896498200.jpg',
-                    '1734405392023.jpg',
-                    '1734586718479.jpg',
-                    '1734076313225.jpg'
+                    'https://picsum.photos/300/400?random=1',
+                    'https://picsum.photos/300/400?random=2',
+                    'https://picsum.photos/300/400?random=3',
+                    'https://picsum.photos/300/400?random=4'
                 ];
 
+                console.log('🔍 Checking elements...');
+                console.log('Cursor:', cursor);
+                console.log('Hover reveals:', hoverReveals);
+                console.log('All reveals valid:', hoverReveals.every(reveal => reveal.container && reveal.inner && reveal.img));
+
                 if (cursor && hoverReveals.every(reveal => reveal.container && reveal.inner && reveal.img)) {
-                    console.log('✅ All elements found');
+                    console.log('✅ All elements found and valid');
 
                     // Make cursor visible
                     cursor.style.display = 'block';
                     cursor.style.opacity = '1';
+
+                    // Pre-load images and set initial styles
+                    hoverReveals.forEach((reveal, index) => {
+                        reveal.img.style.backgroundImage = `url(${images[index]})`;
+                        reveal.container.style.opacity = '0';
+                        console.log(`🖼️ Set image ${index + 1}:`, images[index]);
+                    });
 
                     const hoverElements = document.querySelectorAll('.cursor-hover');
                     const textHoverElements = document.querySelectorAll('.cursor-text-hover');
                     const mydayHoverElements = document.querySelectorAll('.mydayhover');
 
                     console.log(`Found ${hoverElements.length} hover elements, ${textHoverElements.length} text hover elements, ${mydayHoverElements.length} mydayhover elements`);
+                    console.log('MyDay hover elements:', mydayHoverElements);
+
+                    // Add visual indicator to mydayhover elements for debugging
+                    mydayHoverElements.forEach((el, index) => {
+                        console.log(`MyDay element ${index}:`, el.textContent, el.classList);
+                        el.style.border = '2px dashed rgba(255, 0, 0, 0.3)'; // Temporary debug border
+
+                        // Simple test - change background color on hover to verify detection
+                        el.addEventListener('mouseenter', function() {
+                            console.log('🔥 SIMPLE HOVER TEST - Element detected!', this.textContent);
+                            this.style.backgroundColor = 'rgba(255, 255, 0, 0.2)';
+                        });
+
+                        el.addEventListener('mouseleave', function() {
+                            console.log('🔥 SIMPLE HOVER TEST - Mouse left!', this.textContent);
+                            this.style.backgroundColor = '';
+                        });
+                    });
 
                     let mouseX = 0;
                     let mouseY = 0;
@@ -543,91 +572,96 @@
                     });
 
                     // CRAZY HOVER REVEAL EFFECT for mydayhover elements (Bennet Style)
-                    mydayHoverElements.forEach(element => {
-                        element.addEventListener('mouseenter', function() {
-                            console.log('🎨 Starting crazy hover reveal animation!');
+                    mydayHoverElements.forEach((element, elementIndex) => {
+                        console.log(`🎯 Adding hover listeners to element ${elementIndex}:`, element.textContent);
+
+                        element.addEventListener('mouseenter', function(e) {
+                            console.log('🎨 HOVER ENTER - Starting crazy hover reveal animation!', e.target.textContent);
 
                             // Show multiple images with crazy animation
                             hoverReveals.forEach((reveal, index) => {
-                                // Set different images for each reveal
-                                const imgIndex = index % images.length;
-                                reveal.img.style.backgroundImage = `url(${images[imgIndex]})`;
+                                console.log(`🖼️ Animating reveal ${index + 1}`);
+
+                                // Make sure image is set
+                                reveal.img.style.backgroundImage = `url(${images[index]})`;
 
                                 if (typeof gsap !== 'undefined') {
+                                    console.log('✨ Using GSAP animation');
+
                                     // Kill any existing animations
                                     gsap.killTweensOf(reveal.inner);
                                     gsap.killTweensOf(reveal.img);
+                                    gsap.killTweensOf(reveal.container);
 
-                                    // Create crazy entrance animation
-                                    gsap.timeline({
-                                        onStart: () => {
-                                            reveal.container.style.opacity = 1;
-                                        }
-                                    })
-                                    .add('begin')
-                                    .add(gsap.fromTo(reveal.inner, {
-                                        x: index % 2 === 0 ? '-100%' : '100%',
-                                        rotation: (index - 2) * 15
-                                    }, {
+                                    // Simple but effective animation
+                                    gsap.set(reveal.container, { opacity: 1 });
+                                    gsap.set(reveal.inner, { x: index % 2 === 0 ? '-100%' : '100%', rotation: (index - 2) * 15 });
+                                    gsap.set(reveal.img, { x: index % 2 === 0 ? '100%' : '-100%', scale: 0.8 });
+
+                                    gsap.to(reveal.inner, {
                                         duration: 0.6 + (index * 0.1),
                                         ease: "back.out(1.7)",
                                         x: '0%',
                                         rotation: (index - 2) * 5
-                                    }), 'begin')
-                                    .add(gsap.fromTo(reveal.img, {
-                                        x: index % 2 === 0 ? '100%' : '-100%',
-                                        scale: 0.8
-                                    }, {
+                                    });
+
+                                    gsap.to(reveal.img, {
                                         duration: 0.6 + (index * 0.1),
                                         ease: "back.out(1.7)",
                                         x: '0%',
                                         scale: 1
-                                    }), 'begin')
-                                    .to(reveal.container, {
-                                        duration: 0.3,
+                                    });
+
+                                    // Continuous pulsing
+                                    gsap.to(reveal.container, {
+                                        duration: 0.5,
                                         scale: 1.05,
-                                        ease: "power2.out",
+                                        ease: "power2.inOut",
                                         yoyo: true,
-                                        repeat: -1
-                                    }, 'begin+=0.6');
+                                        repeat: -1,
+                                        delay: 0.6 + (index * 0.1)
+                                    });
                                 } else {
-                                    // Fallback without GSAP
+                                    console.log('⚠️ GSAP not available, using fallback');
                                     reveal.container.style.opacity = '1';
                                     reveal.container.style.transform = 'scale(1)';
                                 }
                             });
                         });
 
-                        element.addEventListener('mouseleave', function() {
-                            console.log('🎨 Hiding crazy hover reveal animation');
+                        element.addEventListener('mouseleave', function(e) {
+                            console.log('🎨 HOVER LEAVE - Hiding crazy hover reveal animation', e.target.textContent);
 
                             // Hide all reveals with exit animation
                             hoverReveals.forEach((reveal, index) => {
+                                console.log(`🚪 Hiding reveal ${index + 1}`);
+
                                 if (typeof gsap !== 'undefined') {
                                     // Kill any existing animations
                                     gsap.killTweensOf(reveal.inner);
                                     gsap.killTweensOf(reveal.img);
                                     gsap.killTweensOf(reveal.container);
 
-                                    // Create exit animation
-                                    gsap.timeline({
-                                        onComplete: () => {
-                                            reveal.container.style.opacity = 0;
-                                        }
-                                    })
-                                    .add('begin')
-                                    .add(gsap.to(reveal.inner, {
+                                    // Simple exit animation
+                                    gsap.to(reveal.inner, {
                                         duration: 0.4,
                                         ease: "power2.in",
                                         x: index % 2 === 0 ? '100%' : '-100%',
                                         rotation: (index - 2) * 20
-                                    }), 'begin')
-                                    .add(gsap.to(reveal.img, {
+                                    });
+
+                                    gsap.to(reveal.img, {
                                         duration: 0.4,
                                         ease: "power2.in",
                                         x: index % 2 === 0 ? '-100%' : '100%',
                                         scale: 0.7
-                                    }), 'begin');
+                                    });
+
+                                    gsap.to(reveal.container, {
+                                        duration: 0.4,
+                                        ease: "power2.in",
+                                        opacity: 0
+                                    });
                                 } else {
                                     // Fallback without GSAP
                                     reveal.container.style.opacity = '0';
