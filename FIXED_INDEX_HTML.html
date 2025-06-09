@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MyDayOne | Home</title>
+    
+    <!-- GSAP Library for Hover Effect -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Hover Effect Styles -->
+    <style>
+        .mydayone-hover-img {
+            position: fixed !important;
+            width: 150px !important;
+            height: 200px !important;
+            background-image: url('https://i.ibb.co/wvnTg2d/OIP.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            border-radius: 12px !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7) !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
+            z-index: 999999 !important;
+        }
+        .mydayone-hover-img-1 { transform: rotate(-8deg) !important; width: 140px !important; height: 180px !important; }
+        .mydayone-hover-img-2 { transform: rotate(5deg) !important; width: 160px !important; height: 220px !important; }
+        .mydayone-hover-img-3 { transform: rotate(-3deg) !important; width: 130px !important; height: 170px !important; }
+        .mydayone-hover-img-4 { transform: rotate(7deg) !important; width: 155px !important; height: 210px !important; }
+        
+        /* Visual indicator for hover elements */
+        .mydayone-hover-active {
+            outline: 2px solid #00ff00 !important;
+            outline-offset: 2px !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your existing website content goes here -->
+    <!-- I'll add the hover effect to your logo -->
+    
+    <!-- Hover Images (Hidden by default) -->
+    <div class="mydayone-hover-img mydayone-hover-img-1" id="hoverImg1"></div>
+    <div class="mydayone-hover-img mydayone-hover-img-2" id="hoverImg2"></div>
+    <div class="mydayone-hover-img mydayone-hover-img-3" id="hoverImg3"></div>
+    <div class="mydayone-hover-img mydayone-hover-img-4" id="hoverImg4"></div>
+    
+    <!-- Hover Effect Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 MyDayOne Hover Effect Loading...');
+            
+            // Get hover images
+            const hoverImages = [
+                document.getElementById('hoverImg1'),
+                document.getElementById('hoverImg2'),
+                document.getElementById('hoverImg3'),
+                document.getElementById('hoverImg4')
+            ];
+            
+            // Find logo elements
+            const logoElements = [];
+            
+            // Find by image alt text
+            document.querySelectorAll('img').forEach(img => {
+                const alt = (img.alt || '').toLowerCase();
+                if (alt.includes('mydayone') || alt.includes('my day')) {
+                    logoElements.push(img);
+                    console.log('✅ Found logo by alt:', img.alt);
+                }
+            });
+            
+            // Find by href
+            document.querySelectorAll('a[href="/"]').forEach(link => {
+                logoElements.push(link);
+                console.log('✅ Found logo by href:', link);
+            });
+            
+            // If no specific elements found, target first image
+            if (logoElements.length === 0) {
+                const firstImg = document.querySelector('img');
+                if (firstImg) {
+                    logoElements.push(firstImg);
+                    console.log('✅ Using first image as fallback');
+                }
+            }
+            
+            console.log(`🎯 Found ${logoElements.length} logo elements`);
+            
+            // Positions for scattered effect
+            const positions = [
+                { x: -200, y: -100 }, // Top left
+                { x: 150, y: -80 },   // Top right
+                { x: -180, y: 120 },  // Bottom left
+                { x: 180, y: 100 }    // Bottom right
+            ];
+            
+            // Add hover effect to each logo element
+            logoElements.forEach((element, index) => {
+                // Add visual indicator
+                element.classList.add('mydayone-hover-active');
+                console.log(`✅ Added hover to element ${index + 1}`);
+                
+                element.addEventListener('mouseenter', function(e) {
+                    console.log('🎨 HOVER DETECTED!');
+                    
+                    hoverImages.forEach((img, i) => {
+                        const pos = positions[i];
+                        img.style.left = (e.clientX + pos.x) + 'px';
+                        img.style.top = (e.clientY + pos.y) + 'px';
+                        
+                        if (typeof gsap !== 'undefined') {
+                            gsap.fromTo(img, {
+                                opacity: 0,
+                                scale: 0.5,
+                                rotation: (i - 2) * 20
+                            }, {
+                                duration: 0.6 + (i * 0.1),
+                                opacity: 1,
+                                scale: 1,
+                                rotation: (i - 2) * 8,
+                                ease: "back.out(1.7)",
+                                delay: i * 0.1
+                            });
+                        } else {
+                            img.style.opacity = '1';
+                        }
+                    });
+                });
+                
+                element.addEventListener('mousemove', function(e) {
+                    hoverImages.forEach((img, i) => {
+                        const pos = positions[i];
+                        if (typeof gsap !== 'undefined') {
+                            gsap.to(img, {
+                                duration: 0.3,
+                                left: (e.clientX + pos.x) + 'px',
+                                top: (e.clientY + pos.y) + 'px',
+                                ease: "power2.out"
+                            });
+                        } else {
+                            img.style.left = (e.clientX + pos.x) + 'px';
+                            img.style.top = (e.clientY + pos.y) + 'px';
+                        }
+                    });
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    console.log('🎨 HOVER LEFT!');
+                    
+                    hoverImages.forEach((img, i) => {
+                        if (typeof gsap !== 'undefined') {
+                            gsap.to(img, {
+                                duration: 0.4,
+                                opacity: 0,
+                                scale: 0.3,
+                                rotation: (i - 2) * 30,
+                                ease: "power2.in",
+                                delay: i * 0.05
+                            });
+                        } else {
+                            img.style.opacity = '0';
+                        }
+                    });
+                });
+            });
+            
+            console.log('🎉 HOVER EFFECT READY!');
+            console.log('👀 Look for GREEN OUTLINES around elements');
+            console.log('🖱️ Hover over green-outlined elements to see the effect!');
+            
+            // Show success message
+            setTimeout(() => {
+                alert('✅ Hover effect added!\n\nLook for GREEN OUTLINES around your logo and hover over them to see the scattered images effect!');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
