@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Console Script - MyDayOne Hover Effect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        h2 {
+            color: #ffd700;
+            margin-top: 30px;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 10px;
+        }
+        .step {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #ffd700;
+        }
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #00ff00;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .highlight {
+            background: rgba(255, 193, 7, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ffd700;
+            margin: 15px 0;
+        }
+        .success {
+            background: rgba(40, 167, 69, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #28a745;
+            margin: 15px 0;
+        }
+        .warning {
+            background: rgba(220, 53, 69, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dc3545;
+            margin: 15px 0;
+        }
+        ol, ul {
+            padding-left: 25px;
+        }
+        li {
+            margin: 10px 0;
+        }
+        .copy-btn {
+            background: #ffd700;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .copy-btn:hover {
+            background: #ffed4e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Direct Console Script</h1>
+        <h2>Add Hover Effect to Your Live Website</h2>
+        
+        <div class="warning">
+            <strong>⚠️ Your React website has errors, so we'll add the effect directly via browser console!</strong>
+        </div>
+
+        <h2>📋 Step-by-Step Instructions</h2>
+        
+        <div class="step">
+            <strong>Step 1:</strong> Go to your live website
+            <br><a href="https://my-day-one-zeta.vercel.app/" target="_blank" style="color: #ffd700;">https://my-day-one-zeta.vercel.app/</a>
+        </div>
+        
+        <div class="step">
+            <strong>Step 2:</strong> Open Browser Console
+            <ul>
+                <li><strong>Chrome/Edge:</strong> Press F12 or Ctrl+Shift+I</li>
+                <li><strong>Firefox:</strong> Press F12 or Ctrl+Shift+K</li>
+                <li><strong>Safari:</strong> Press Cmd+Option+I</li>
+            </ul>
+            Click on the <strong>"Console"</strong> tab
+        </div>
+        
+        <div class="step">
+            <strong>Step 3:</strong> Copy the script below (click the copy button)
+        </div>
+        
+        <button class="copy-btn" onclick="copyScript()">📋 Copy Script to Clipboard</button>
+        
+        <div class="code-block" id="scriptCode">
+// DIRECT CONSOLE SCRIPT FOR YOUR LIVE WEBSITE
+console.log('🚀 STARTING MYDAYONE HOVER EFFECT...');
+
+if (typeof gsap === 'undefined') {
+    const gsapScript = document.createElement('script');
+    gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
+    gsapScript.onload = function() { initHoverEffect(); };
+    document.head.appendChild(gsapScript);
+} else {
+    initHoverEffect();
+}
+
+function initHoverEffect() {
+    document.querySelectorAll('.mydayone-hover-image').forEach(el => el.remove());
+    
+    const styles = `
+        .mydayone-hover-image {
+            position: fixed !important; width: 150px !important; height: 200px !important;
+            pointer-events: none !important; opacity: 0 !important; z-index: 99999 !important;
+            border-radius: 12px !important; overflow: hidden !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+            background-size: cover !important; background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-image: url('https://i.ibb.co/wvnTg2d/OIP.jpg') !important;
+        }
+        .mydayone-hover-image-1 { transform: rotate(-8deg) !important; width: 140px !important; height: 180px !important; }
+        .mydayone-hover-image-2 { transform: rotate(5deg) !important; width: 160px !important; height: 220px !important; }
+        .mydayone-hover-image-3 { transform: rotate(-3deg) !important; width: 130px !important; height: 170px !important; }
+        .mydayone-hover-image-4 { transform: rotate(7deg) !important; width: 155px !important; height: 210px !important; }
+    `;
+    
+    let styleSheet = document.getElementById('mydayone-hover-styles');
+    if (styleSheet) styleSheet.remove();
+    styleSheet = document.createElement('style');
+    styleSheet.id = 'mydayone-hover-styles';
+    styleSheet.textContent = styles;
+    document.head.appendChild(styleSheet);
+    
+    const hoverImages = [];
+    for (let i = 0; i < 4; i++) {
+        const img = document.createElement('div');
+        img.className = `mydayone-hover-image mydayone-hover-image-${i + 1}`;
+        document.body.appendChild(img);
+        hoverImages.push(img);
+    }
+    
+    const logoSelectors = ['img[alt*="My DayOne"]', 'img[alt*="MyDayOne"]', 'a[href="/"]', 'header img', 'header a'];
+    const logoElements = [];
+    
+    logoSelectors.forEach(selector => {
+        try {
+            document.querySelectorAll(selector).forEach(el => {
+                if (!logoElements.includes(el)) logoElements.push(el);
+            });
+        } catch (e) {}
+    });
+    
+    document.querySelectorAll('*').forEach(el => {
+        const text = (el.textContent || '').toLowerCase();
+        const src = (el.src || '').toLowerCase();
+        if (text.includes('mydayone') || src.includes('mydayone') || src.includes('logo')) {
+            if (!logoElements.includes(el)) logoElements.push(el);
+        }
+    });
+    
+    const positions = [
+        { x: -200, y: -100 }, { x: 150, y: -80 }, { x: -180, y: 120 }, { x: 180, y: 100 }
+    ];
+    
+    logoElements.forEach(element => {
+        element.style.border = '2px dashed red';
+        element.style.boxSizing = 'border-box';
+        
+        element.addEventListener('mouseenter', function(e) {
+            hoverImages.forEach((img, imgIndex) => {
+                const pos = positions[imgIndex];
+                img.style.left = (e.clientX + pos.x) + 'px';
+                img.style.top = (e.clientY + pos.y) + 'px';
+                
+                gsap.fromTo(img, {
+                    opacity: 0, scale: 0.5, rotation: (imgIndex - 2) * 20
+                }, {
+                    duration: 0.6 + (imgIndex * 0.1), opacity: 1, scale: 1,
+                    rotation: (imgIndex - 2) * 8, ease: "back.out(1.7)", delay: imgIndex * 0.1
+                });
+            });
+        });
+        
+        element.addEventListener('mousemove', function(e) {
+            hoverImages.forEach((img, imgIndex) => {
+                const pos = positions[imgIndex];
+                gsap.to(img, {
+                    duration: 0.3, left: (e.clientX + pos.x) + 'px',
+                    top: (e.clientY + pos.y) + 'px', ease: "power2.out"
+                });
+            });
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            hoverImages.forEach((img, imgIndex) => {
+                gsap.to(img, {
+                    duration: 0.4, opacity: 0, scale: 0.3,
+                    rotation: (imgIndex - 2) * 30, ease: "power2.in", delay: imgIndex * 0.05
+                });
+            });
+        });
+    });
+    
+    console.log('🎉 HOVER EFFECT SETUP COMPLETE!');
+    console.log('👀 Look for RED DASHED BORDERS around elements');
+    console.log('🖱️ Hover over elements with red borders to see the effect!');
+}
+        </div>
+        
+        <div class="step">
+            <strong>Step 4:</strong> Paste the script in the console and press <strong>Enter</strong>
+        </div>
+        
+        <div class="step">
+            <strong>Step 5:</strong> Look for <strong>RED DASHED BORDERS</strong> around elements on your website
+        </div>
+        
+        <div class="step">
+            <strong>Step 6:</strong> <strong>Hover over elements with red borders</strong> to see the scattered images effect!
+        </div>
+
+        <h2>✅ What Should Happen</h2>
+        
+        <div class="success">
+            <ul>
+                <li>🔴 <strong>Red dashed borders</strong> appear around your logo/header elements</li>
+                <li>🖱️ When you <strong>hover over red-bordered elements</strong>, 4 images appear scattered around cursor</li>
+                <li>🎨 Images use <strong>your specific image</strong> with different rotations and sizes</li>
+                <li>✨ <strong>Smooth animations</strong> with GSAP</li>
+            </ul>
+        </div>
+
+        <h2>🔧 Troubleshooting</h2>
+        
+        <div class="highlight">
+            <strong>If it doesn't work:</strong>
+            <ul>
+                <li>Make sure you're on <strong>https://my-day-one-zeta.vercel.app/</strong></li>
+                <li>Check console for any error messages</li>
+                <li>Try refreshing the page and running the script again</li>
+                <li>Make sure you copied the <strong>entire script</strong></li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>Note:</strong> This effect will only last until you refresh the page. To make it permanent, you need to add the script to your React website's code.
+        </div>
+    </div>
+
+    <script>
+        function copyScript() {
+            const scriptText = document.getElementById('scriptCode').textContent;
+            navigator.clipboard.writeText(scriptText).then(function() {
+                alert('✅ Script copied to clipboard! Now paste it in your website console.');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+                alert('❌ Could not copy automatically. Please select and copy the script manually.');
+            });
+        }
+    </script>
+</body>
+</html>
