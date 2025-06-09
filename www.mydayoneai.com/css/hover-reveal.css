@@ -1,0 +1,25 @@
+.hover-reveal {
+    position: fixed;
+    width: 20vw;
+    height: 30vw;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 999;
+}
+
+.hover-reveal__inner, .hover-reveal__img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.hover-reveal__img {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.mydayhover {
+    position: relative;
+    cursor: pointer;
+}

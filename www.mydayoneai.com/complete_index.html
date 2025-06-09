@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MyDayOne | Home - Complete Animation</title>
+    <meta name="description" content="MyDayOne is a suite that helps you to start your day with a positive mindset.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" sizes="16x16">
+    
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        /* Hide default cursor on desktop only */
+        @media (min-width: 768px) {
+            * {
+                cursor: none !important;
+            }
+        }
+
+        /* Custom cursor */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            background: rgba(112, 48, 160, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .custom-cursor {
+                display: block;
+            }
+        }
+
+        /* Hover Reveal Effect Styles */
+        .hover-reveal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 320px;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 998;
+        }
+
+        .hover-reveal__inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .hover-reveal__img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(1.1) contrast(1.1);
+        }
+
+        /* Add jiggling animation */
+        @keyframes jiggle {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(1deg) scale(1.02); }
+            50% { transform: rotate(-1deg) scale(0.98); }
+            75% { transform: rotate(1deg) scale(1.01); }
+        }
+
+        .hover-reveal.jiggling .hover-reveal__img {
+            animation: jiggle 0.3s ease-in-out infinite;
+        }
+
+        /* Mydayhover class for trigger elements */
+        .mydayhover {
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* Special hover effect for "my day one" text */
+        .mydayone-hover {
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .mydayone-hover:hover {
+            transform: scale(1.05);
+        }
+
+        .mydayone-hover::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, rgba(112, 48, 160, 0.1), rgba(156, 39, 176, 0.1));
+            border-radius: 15px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .mydayone-hover:hover::before {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Basic styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin: 40px 0 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 18px 35px;
+            background: rgba(112, 48, 160, 0.8);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            background: rgba(112, 48, 160, 1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(112, 48, 160, 0.4);
+        }
+
+        .features {
+            margin-top: 80px;
+        }
+
+        .features h2 {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .feature-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .footer {
+            margin-top: 80px;
+            padding: 40px 20px;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav {
+                gap: 15px;
+            }
+            
+            .nav a {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            .hover-reveal {
+                display: none; /* Hide on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor Element -->
+    <div class="custom-cursor" id="customCursor"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo cursor-text-hover mydayone-hover mydayhover" data-img="mydayone.png">MyDayOne</div>
+            <nav class="nav">
+                <a href="#" class="cursor-hover">Home</a>
+                <a href="#" class="cursor-hover">Products</a>
+                <a href="#" class="cursor-hover">Services</a>
+                <a href="#" class="cursor-hover">About</a>
+                <a href="#" class="cursor-hover">Blog</a>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="cursor-text-hover mydayone-hover mydayhover" data-img="1733896498200.jpg">Welcome to MyDayOne</h1>
+            <p>Transform Learning into Measurable Success with myDayOne.</p>
+            <button class="btn cursor-hover">Get Started</button>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <h2>Most Talent Platforms Track Progress. We Drive Results.</h2>
+            <div class="feature-grid">
+                <div class="feature-card cursor-hover mydayhover" data-img="1734405392023.jpg">
+                    <h3>🚀 Talent Readiness</h3>
+                    <p>Accelerate your team's readiness with our innovative solutions and cutting-edge methodologies.</p>
+                </div>
+                <div class="feature-card cursor-hover mydayhover" data-img="1734586718479.jpg">
+                    <h3>📊 Assessment Tools</h3>
+                    <p>Comprehensive assessment tools to measure and improve performance across all skill areas.</p>
+                </div>
+                <div class="feature-card cursor-hover mydayhover" data-img="1734076313225.jpg">
+                    <h3>📈 Analytics</h3>
+                    <p>Real-time analytics to track progress and optimize strategies for maximum impact.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 MyDayOne. All rights reserved. | Custom Cursor + Hover Reveal Animation Demo</p>
+        </footer>
+    </div>
+    <!-- Hover Reveal Element -->
+    <div class="hover-reveal" id="hoverReveal">
+        <div class="hover-reveal__inner">
+            <div class="hover-reveal__img" id="hoverRevealImg"></div>
+        </div>
+    </div>
+
+    <!-- Combined JavaScript for Custom Cursor + Hover Reveal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 MyDayOne Complete Animation Loading...');
+            console.log('GSAP available:', typeof gsap !== 'undefined');
+
+            // Check if device supports hover (desktop)
+            if (window.matchMedia('(min-width: 768px)').matches) {
+                const cursor = document.getElementById('customCursor');
+                const hoverReveal = document.getElementById('hoverReveal');
+                const hoverRevealImg = document.getElementById('hoverRevealImg');
+
+                if (cursor && hoverReveal && hoverRevealImg) {
+                    console.log('✅ All elements found');
+
+                    // Make cursor visible
+                    cursor.style.display = 'block';
+                    cursor.style.opacity = '1';
+
+                    const hoverElements = document.querySelectorAll('.cursor-hover');
+                    const textHoverElements = document.querySelectorAll('.cursor-text-hover');
+                    const mydayHoverElements = document.querySelectorAll('.mydayhover');
+
+                    console.log(`Found ${hoverElements.length} hover elements, ${textHoverElements.length} text hover elements, ${mydayHoverElements.length} mydayhover elements`);
+
+                    let mouseX = 0;
+                    let mouseY = 0;
+                    let cursorX = 0;
+                    let cursorY = 0;
+
+                    // Mouse move event
+                    document.addEventListener('mousemove', function(e) {
+                        mouseX = e.clientX;
+                        mouseY = e.clientY;
+
+                        // Update hover reveal position
+                        if (typeof gsap !== 'undefined') {
+                            gsap.set(hoverReveal, {
+                                x: mouseX - 110, // Center the 220px wide element
+                                y: mouseY - 160  // Center the 320px tall element
+                            });
+                        } else {
+                            hoverReveal.style.left = (mouseX - 110) + 'px';
+                            hoverReveal.style.top = (mouseY - 160) + 'px';
+                        }
+                    });
+
+                    // Smooth cursor animation
+                    function animateCursor() {
+                        const speed = 0.15;
+                        cursorX += (mouseX - cursorX) * speed;
+                        cursorY += (mouseY - cursorY) * speed;
+
+                        if (typeof gsap !== 'undefined') {
+                            gsap.set(cursor, {
+                                x: cursorX,
+                                y: cursorY
+                            });
+                        } else {
+                            cursor.style.left = cursorX + 'px';
+                            cursor.style.top = cursorY + 'px';
+                        }
+
+                        requestAnimationFrame(animateCursor);
+                    }
+                    animateCursor();
+
+                    // Hover effects for regular elements
+                    hoverElements.forEach(element => {
+                        element.addEventListener('mouseenter', function() {
+                            if (typeof gsap !== 'undefined') {
+                                gsap.to(cursor, {
+                                    duration: 0.3,
+                                    scale: 3,
+                                    backgroundColor: 'rgba(112, 48, 160, 0.3)',
+                                    border: '2px solid rgba(112, 48, 160, 0.8)',
+                                    ease: 'power2.out'
+                                });
+                            } else {
+                                cursor.style.width = '60px';
+                                cursor.style.height = '60px';
+                                cursor.style.backgroundColor = 'rgba(112, 48, 160, 0.3)';
+                                cursor.style.border = '2px solid rgba(112, 48, 160, 0.8)';
+                            }
+                        });
+
+                        element.addEventListener('mouseleave', function() {
+                            if (typeof gsap !== 'undefined') {
+                                gsap.to(cursor, {
+                                    duration: 0.3,
+                                    scale: 1,
+                                    backgroundColor: 'rgba(112, 48, 160, 0.8)',
+                                    border: 'none',
+                                    ease: 'power2.out'
+                                });
+                            } else {
+                                cursor.style.width = '20px';
+                                cursor.style.height = '20px';
+                                cursor.style.backgroundColor = 'rgba(112, 48, 160, 0.8)';
+                                cursor.style.border = 'none';
+                            }
+                        });
+                    });
+
+                    // Special hover effects for text elements
+                    textHoverElements.forEach(element => {
+                        element.addEventListener('mouseenter', function() {
+                            if (typeof gsap !== 'undefined') {
+                                gsap.to(cursor, {
+                                    duration: 0.4,
+                                    scale: 4,
+                                    backgroundColor: 'rgba(112, 48, 160, 0.1)',
+                                    border: '2px solid rgba(112, 48, 160, 1)',
+                                    ease: 'elastic.out(1, 0.3)'
+                                });
+                            } else {
+                                cursor.style.width = '80px';
+                                cursor.style.height = '80px';
+                                cursor.style.backgroundColor = 'rgba(112, 48, 160, 0.1)';
+                                cursor.style.border = '2px solid rgba(112, 48, 160, 1)';
+                            }
+                            cursor.innerHTML = '<span style="font-size: 12px; color: #7030A0; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">VIEW</span>';
+                        });
+
+                        element.addEventListener('mouseleave', function() {
+                            if (typeof gsap !== 'undefined') {
+                                gsap.to(cursor, {
+                                    duration: 0.3,
+                                    scale: 1,
+                                    backgroundColor: 'rgba(112, 48, 160, 0.8)',
+                                    border: 'none',
+                                    ease: 'power2.out'
+                                });
+                            } else {
+                                cursor.style.width = '20px';
+                                cursor.style.height = '20px';
+                                cursor.style.backgroundColor = 'rgba(112, 48, 160, 0.8)';
+                                cursor.style.border = 'none';
+                            }
+                            cursor.innerHTML = '';
+                        });
+                    });
+
+                    // HOVER REVEAL EFFECT for mydayhover elements
+                    mydayHoverElements.forEach(element => {
+                        element.addEventListener('mouseenter', function() {
+                            const imgSrc = element.getAttribute('data-img');
+                            if (imgSrc) {
+                                console.log('🖼️ Showing hover reveal for:', imgSrc);
+
+                                // Set the background image
+                                hoverRevealImg.style.backgroundImage = `url(${imgSrc})`;
+
+                                // Show and animate the hover reveal
+                                if (typeof gsap !== 'undefined') {
+                                    gsap.to(hoverReveal, {
+                                        duration: 0.4,
+                                        opacity: 1,
+                                        scale: 1,
+                                        ease: 'power2.out'
+                                    });
+                                } else {
+                                    hoverReveal.style.opacity = '1';
+                                    hoverReveal.style.transform = 'scale(1)';
+                                }
+
+                                // Add jiggling animation
+                                hoverReveal.classList.add('jiggling');
+                            }
+                        });
+
+                        element.addEventListener('mouseleave', function() {
+                            console.log('🖼️ Hiding hover reveal');
+
+                            // Hide the hover reveal
+                            if (typeof gsap !== 'undefined') {
+                                gsap.to(hoverReveal, {
+                                    duration: 0.3,
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    ease: 'power2.out'
+                                });
+                            } else {
+                                hoverReveal.style.opacity = '0';
+                                hoverReveal.style.transform = 'scale(0.8)';
+                            }
+
+                            // Remove jiggling animation
+                            hoverReveal.classList.remove('jiggling');
+                        });
+                    });
+
+                    // Click effect
+                    document.addEventListener('mousedown', function() {
+                        if (typeof gsap !== 'undefined') {
+                            gsap.to(cursor, {
+                                duration: 0.1,
+                                scale: 0.8,
+                                ease: 'power2.out'
+                            });
+                        }
+                    });
+
+                    document.addEventListener('mouseup', function() {
+                        if (typeof gsap !== 'undefined') {
+                            gsap.to(cursor, {
+                                duration: 0.1,
+                                scale: 1,
+                                ease: 'power2.out'
+                            });
+                        }
+                    });
+
+                    console.log('🎯 MyDayOne Complete Animation initialized successfully!');
+                } else {
+                    console.error('❌ Required elements not found');
+                }
+            } else {
+                console.log('📱 Mobile device detected - animations disabled');
+            }
+        });
+    </script>
+</body>
+</html>
