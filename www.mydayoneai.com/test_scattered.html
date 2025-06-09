@@ -39,6 +39,13 @@
             background: rgba(255, 255, 0, 0.3) !important;
         }
 
+        /* Force images to be visible for testing */
+        .hover-image.test-visible {
+            opacity: 1 !important;
+            position: fixed;
+            z-index: 9999;
+        }
+
         /* Scattered Images */
         .hover-image {
             position: fixed;
@@ -154,15 +161,48 @@
             console.log('🖼️ Images to use:', images);
             console.log('📦 Hover images:', hoverImages);
 
-            // Set images
+            // Set images and test visibility
             hoverImages.forEach((img, index) => {
                 if (img) {
                     img.style.backgroundImage = `url(${images[index]})`;
                     console.log(`✅ Set image ${index + 1}: ${images[index]}`);
+
+                    // TEST: Make images visible immediately to check if they load
+                    img.style.left = (200 + index * 200) + 'px';
+                    img.style.top = '100px';
+                    img.style.opacity = '1';
+                    img.classList.add('test-visible');
+
+                    console.log(`🔍 Image ${index + 1} positioned at:`, img.style.left, img.style.top);
                 } else {
                     console.error(`❌ Image ${index + 1} element not found!`);
                 }
             });
+
+            // Add a button to toggle test visibility
+            const toggleBtn = document.createElement('button');
+            toggleBtn.textContent = 'Toggle Images Test';
+            toggleBtn.style.position = 'fixed';
+            toggleBtn.style.top = '10px';
+            toggleBtn.style.right = '10px';
+            toggleBtn.style.zIndex = '10000';
+            toggleBtn.style.padding = '10px';
+            toggleBtn.style.background = '#ff0000';
+            toggleBtn.style.color = 'white';
+            toggleBtn.style.border = 'none';
+            toggleBtn.style.borderRadius = '5px';
+            toggleBtn.onclick = function() {
+                hoverImages.forEach(img => {
+                    if (img.classList.contains('test-visible')) {
+                        img.classList.remove('test-visible');
+                        img.style.opacity = '0';
+                    } else {
+                        img.classList.add('test-visible');
+                        img.style.opacity = '1';
+                    }
+                });
+            };
+            document.body.appendChild(toggleBtn);
 
             // Hover effect
             if (testLogo) {
