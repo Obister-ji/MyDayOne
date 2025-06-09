@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MyDayOne Hover Test</title>
+    
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .test-container {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .mydayone-logo {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 50px 0;
+            padding: 20px;
+            border: 3px solid #ff0000;
+            display: inline-block;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+
+        .mydayone-logo:hover {
+            background: rgba(255, 255, 0, 0.3) !important;
+        }
+
+        /* Bennet-Style Hover Reveal */
+        .hover-reveal {
+            position: fixed;
+            width: 20vw;
+            height: 30vw;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 999;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .hover-reveal__inner, .hover-reveal__img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+
+        .hover-reveal__inner {
+            overflow: hidden;
+        }
+
+        .hover-reveal__img {
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        .instructions {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .debug-info {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            font-family: monospace;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>MyDayOne Hover Animation Test</h1>
+        
+        <div class="instructions">
+            <h3>🎯 Test Instructions:</h3>
+            <p>1. You should see a RED BORDER around "MyDayOne" below</p>
+            <p>2. Hover over "MyDayOne" - it should turn YELLOW</p>
+            <p>3. 4 images should appear with crazy animation</p>
+            <p>4. Check console (F12) for debug messages</p>
+        </div>
+
+        <div class="mydayone-logo mydayhover" id="testLogo">MyDayOne</div>
+
+        <div class="debug-info" id="debugInfo">
+            <strong>Debug Info:</strong><br>
+            <span id="debugText">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Single Hover Reveal Element (Bennet Style) -->
+    <div class="hover-reveal" id="hoverReveal">
+        <div class="hover-reveal__inner" id="hoverRevealInner">
+            <div class="hover-reveal__img" id="hoverRevealImg"></div>
+        </div>
+    </div>
+
+    <script>
+        // Helper function to get mouse position
+        function getMousePos(e) {
+            return {
+                x: e.clientX,
+                y: e.clientY
+            };
+        }
+
+        // Bennet-Style Hover Reveal Effect
+        class BennetHoverReveal {
+            constructor(el) {
+                this.DOM = {el: el};
+                this.DOM.reveal = document.getElementById('hoverReveal');
+                this.DOM.revealInner = document.getElementById('hoverRevealInner');
+                this.DOM.revealImg = document.getElementById('hoverRevealImg');
+
+                // Set the image from data attribute or use default
+                const imgSrc = this.DOM.el.dataset.img || 'https://picsum.photos/400/600?random=1';
+                this.DOM.revealImg.style.backgroundImage = `url(${imgSrc})`;
+
+                this.initEvents();
+            }
+
+            initEvents() {
+                this.positionElement = (ev) => {
+                    const mousePos = getMousePos(ev);
+                    const docScrolls = {
+                        left: window.pageXOffset || document.documentElement.scrollLeft,
+                        top: window.pageYOffset || document.documentElement.scrollTop
+                    };
+
+                    if (typeof gsap !== 'undefined') {
+                        gsap.to(this.DOM.reveal, {
+                            duration: 0.7,
+                            top: `${mousePos.y - (this.DOM.reveal.offsetHeight * 0.5) - docScrolls.top}px`,
+                            left: `${mousePos.x - (this.DOM.reveal.offsetWidth * 0.5) - docScrolls.left}px`,
+                            ease: "power4.out"
+                        });
+                    } else {
+                        this.DOM.reveal.style.top = `${mousePos.y - (this.DOM.reveal.offsetHeight * 0.5) - docScrolls.top}px`;
+                        this.DOM.reveal.style.left = `${mousePos.x - (this.DOM.reveal.offsetWidth * 0.5) - docScrolls.left}px`;
+                    }
+                };
+
+                this.mouseenterFn = (ev) => {
+                    console.log('🎨 BENNET HOVER ENTER!');
+                    this.positionElement(ev);
+                    this.showImage();
+                };
+
+                this.mousemoveFn = ev => requestAnimationFrame(() => {
+                    this.positionElement(ev);
+                });
+
+                this.mouseleaveFn = () => {
+                    console.log('🎨 BENNET HOVER LEAVE!');
+                    this.hideImage();
+                };
+
+                this.DOM.el.addEventListener('mouseenter', this.mouseenterFn);
+                this.DOM.el.addEventListener('mousemove', this.mousemoveFn);
+                this.DOM.el.addEventListener('mouseleave', this.mouseleaveFn);
+            }
+
+            showImage() {
+                if (typeof gsap !== 'undefined') {
+                    gsap.killTweensOf(this.DOM.revealInner);
+                    gsap.killTweensOf(this.DOM.revealImg);
+
+                    gsap.timeline({
+                        onStart: () => {
+                            this.DOM.reveal.style.opacity = 1;
+                            gsap.set(this.DOM.el, {zIndex: 1000});
+                        }
+                    })
+                    .add('begin')
+                    .add(gsap.to(this.DOM.revealInner, {
+                        duration: 0.4,
+                        ease: "sine.out",
+                        startAt: {x: '-100%'},
+                        x: '0%'
+                    }), 'begin')
+                    .add(gsap.to(this.DOM.revealImg, {
+                        duration: 0.4,
+                        ease: "sine.out",
+                        startAt: {x: '100%'},
+                        x: '0%'
+                    }), 'begin');
+                } else {
+                    // Fallback without GSAP
+                    this.DOM.reveal.style.opacity = '1';
+                }
+            }
+
+            hideImage() {
+                if (typeof gsap !== 'undefined') {
+                    gsap.killTweensOf(this.DOM.revealInner);
+                    gsap.killTweensOf(this.DOM.revealImg);
+
+                    gsap.timeline({
+                        onComplete: () => {
+                            gsap.set(this.DOM.el, {zIndex: ''});
+                            gsap.set(this.DOM.reveal, {opacity: 0});
+                        }
+                    })
+                    .add('begin')
+                    .add(gsap.to(this.DOM.revealInner, {
+                        duration: 0.3,
+                        ease: "sine.out",
+                        x: '100%'
+                    }), 'begin')
+                    .add(gsap.to(this.DOM.revealImg, {
+                        duration: 0.3,
+                        ease: "sine.out",
+                        x: '-100%'
+                    }), 'begin');
+                } else {
+                    // Fallback without GSAP
+                    this.DOM.reveal.style.opacity = '0';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Bennet-Style Hover Test Loading!');
+
+            const debugText = document.getElementById('debugText');
+            const testLogo = document.getElementById('testLogo');
+
+            // Update debug info
+            debugText.innerHTML = `
+                GSAP Available: ${typeof gsap !== 'undefined'}<br>
+                Test Logo Found: ${testLogo !== null}<br>
+                Hover Reveal Found: ${document.getElementById('hoverReveal') !== null}<br>
+                Current Time: ${new Date().toLocaleTimeString()}
+            `;
+
+            // Initialize Bennet-style hover reveal
+            if (testLogo) {
+                new BennetHoverReveal(testLogo);
+                console.log('✅ Bennet hover reveal initialized!');
+            } else {
+                console.error('❌ Test logo not found!');
+            }
+        });
+    </script>
+</body>
+</html>

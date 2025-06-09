@@ -40,7 +40,7 @@
             }
         }
 
-        /* Hover Reveal Effect Styles - Bennet Style */
+        /* Bennet-Style Hover Reveal Effect */
         .hover-reveal {
             position: fixed;
             width: 20vw;
@@ -48,7 +48,7 @@
             pointer-events: none;
             opacity: 0;
             z-index: 999;
-            border-radius: 15px;
+            border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
         }
@@ -59,39 +59,11 @@
             position: absolute;
         }
 
-        .hover-reveal__img {
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            filter: brightness(1.1) contrast(1.2) saturate(1.1);
-        }
-
-        /* Multiple reveal containers for crazy animation */
-        .hover-reveal-1, .hover-reveal-2, .hover-reveal-3, .hover-reveal-4 {
-            position: fixed;
-            width: 18vw;
-            height: 25vw;
-            pointer-events: none;
-            opacity: 0;
-            z-index: 999;
-            border-radius: 12px;
+        .hover-reveal__inner {
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .hover-reveal-1 { transform: rotate(-5deg); }
-        .hover-reveal-2 { transform: rotate(3deg); }
-        .hover-reveal-3 { transform: rotate(-2deg); }
-        .hover-reveal-4 { transform: rotate(4deg); }
-
-        .hover-reveal__inner-1, .hover-reveal__inner-2, .hover-reveal__inner-3, .hover-reveal__inner-4,
-        .hover-reveal__img-1, .hover-reveal__img-2, .hover-reveal__img-3, .hover-reveal__img-4 {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-        }
-
-        .hover-reveal__img-1, .hover-reveal__img-2, .hover-reveal__img-3, .hover-reveal__img-4 {
+        .hover-reveal__img {
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
@@ -341,25 +313,10 @@
             <p>&copy; 2024 MyDayOne. All rights reserved. | Custom Cursor + Hover Reveal Animation Demo</p>
         </footer>
     </div>
-    <!-- Multiple Hover Reveal Elements for Crazy Animation -->
-    <div class="hover-reveal-1" id="hoverReveal1">
-        <div class="hover-reveal__inner-1">
-            <div class="hover-reveal__img-1" id="hoverRevealImg1"></div>
-        </div>
-    </div>
-    <div class="hover-reveal-2" id="hoverReveal2">
-        <div class="hover-reveal__inner-2">
-            <div class="hover-reveal__img-2" id="hoverRevealImg2"></div>
-        </div>
-    </div>
-    <div class="hover-reveal-3" id="hoverReveal3">
-        <div class="hover-reveal__inner-3">
-            <div class="hover-reveal__img-3" id="hoverRevealImg3"></div>
-        </div>
-    </div>
-    <div class="hover-reveal-4" id="hoverReveal4">
-        <div class="hover-reveal__inner-4">
-            <div class="hover-reveal__img-4" id="hoverRevealImg4"></div>
+    <!-- Single Hover Reveal Element (Bennet Style) -->
+    <div class="hover-reveal" id="hoverReveal">
+        <div class="hover-reveal__inner" id="hoverRevealInner">
+            <div class="hover-reveal__img" id="hoverRevealImg"></div>
         </div>
     </div>
 
@@ -373,56 +330,26 @@
             if (window.matchMedia('(min-width: 768px)').matches) {
                 const cursor = document.getElementById('customCursor');
 
-                // Get all hover reveal elements
-                const hoverReveals = [
-                    {
-                        container: document.getElementById('hoverReveal1'),
-                        inner: document.querySelector('.hover-reveal__inner-1'),
-                        img: document.getElementById('hoverRevealImg1')
-                    },
-                    {
-                        container: document.getElementById('hoverReveal2'),
-                        inner: document.querySelector('.hover-reveal__inner-2'),
-                        img: document.getElementById('hoverRevealImg2')
-                    },
-                    {
-                        container: document.getElementById('hoverReveal3'),
-                        inner: document.querySelector('.hover-reveal__inner-3'),
-                        img: document.getElementById('hoverRevealImg3')
-                    },
-                    {
-                        container: document.getElementById('hoverReveal4'),
-                        inner: document.querySelector('.hover-reveal__inner-4'),
-                        img: document.getElementById('hoverRevealImg4')
-                    }
-                ];
-
-                // Available dummy images for the crazy animation
-                const images = [
-                    'https://picsum.photos/300/400?random=1',
-                    'https://picsum.photos/300/400?random=2',
-                    'https://picsum.photos/300/400?random=3',
-                    'https://picsum.photos/300/400?random=4'
-                ];
+                // Get hover reveal elements (Bennet Style)
+                const hoverReveal = document.getElementById('hoverReveal');
+                const hoverRevealInner = document.getElementById('hoverRevealInner');
+                const hoverRevealImg = document.getElementById('hoverRevealImg');
 
                 console.log('🔍 Checking elements...');
                 console.log('Cursor:', cursor);
-                console.log('Hover reveals:', hoverReveals);
-                console.log('All reveals valid:', hoverReveals.every(reveal => reveal.container && reveal.inner && reveal.img));
+                console.log('Hover reveal:', hoverReveal);
+                console.log('Hover reveal inner:', hoverRevealInner);
+                console.log('Hover reveal img:', hoverRevealImg);
 
-                if (cursor && hoverReveals.every(reveal => reveal.container && reveal.inner && reveal.img)) {
+                if (cursor && hoverReveal && hoverRevealInner && hoverRevealImg) {
                     console.log('✅ All elements found and valid');
 
                     // Make cursor visible
                     cursor.style.display = 'block';
                     cursor.style.opacity = '1';
 
-                    // Pre-load images and set initial styles
-                    hoverReveals.forEach((reveal, index) => {
-                        reveal.img.style.backgroundImage = `url(${images[index]})`;
-                        reveal.container.style.opacity = '0';
-                        console.log(`🖼️ Set image ${index + 1}:`, images[index]);
-                    });
+                    // Set default image
+                    hoverRevealImg.style.backgroundImage = 'url(https://picsum.photos/400/600?random=1)';
 
                     const hoverElements = document.querySelectorAll('.cursor-hover');
                     const textHoverElements = document.querySelectorAll('.cursor-text-hover');
@@ -571,103 +498,133 @@
                         });
                     });
 
-                    // CRAZY HOVER REVEAL EFFECT for mydayhover elements (Bennet Style)
-                    mydayHoverElements.forEach((element, elementIndex) => {
-                        console.log(`🎯 Adding hover listeners to element ${elementIndex}:`, element.textContent);
+                    // Helper function to get mouse position
+                    function getMousePos(e) {
+                        return {
+                            x: e.clientX,
+                            y: e.clientY
+                        };
+                    }
 
-                        element.addEventListener('mouseenter', function(e) {
-                            console.log('🎨 HOVER ENTER - Starting crazy hover reveal animation!', e.target.textContent);
+                    // Bennet-Style Hover Reveal Effect
+                    class BennetHoverReveal {
+                        constructor(el) {
+                            this.DOM = {el: el};
+                            this.DOM.reveal = hoverReveal;
+                            this.DOM.revealInner = hoverRevealInner;
+                            this.DOM.revealImg = hoverRevealImg;
 
-                            // Show multiple images with crazy animation
-                            hoverReveals.forEach((reveal, index) => {
-                                console.log(`🖼️ Animating reveal ${index + 1}`);
+                            // Set the image from data attribute or use default
+                            const imgSrc = this.DOM.el.dataset.img || 'https://picsum.photos/400/600?random=1';
+                            this.DOM.revealImg.style.backgroundImage = `url(${imgSrc})`;
 
-                                // Make sure image is set
-                                reveal.img.style.backgroundImage = `url(${images[index]})`;
+                            this.initEvents();
+                        }
 
-                                if (typeof gsap !== 'undefined') {
-                                    console.log('✨ Using GSAP animation');
-
-                                    // Kill any existing animations
-                                    gsap.killTweensOf(reveal.inner);
-                                    gsap.killTweensOf(reveal.img);
-                                    gsap.killTweensOf(reveal.container);
-
-                                    // Simple but effective animation
-                                    gsap.set(reveal.container, { opacity: 1 });
-                                    gsap.set(reveal.inner, { x: index % 2 === 0 ? '-100%' : '100%', rotation: (index - 2) * 15 });
-                                    gsap.set(reveal.img, { x: index % 2 === 0 ? '100%' : '-100%', scale: 0.8 });
-
-                                    gsap.to(reveal.inner, {
-                                        duration: 0.6 + (index * 0.1),
-                                        ease: "back.out(1.7)",
-                                        x: '0%',
-                                        rotation: (index - 2) * 5
-                                    });
-
-                                    gsap.to(reveal.img, {
-                                        duration: 0.6 + (index * 0.1),
-                                        ease: "back.out(1.7)",
-                                        x: '0%',
-                                        scale: 1
-                                    });
-
-                                    // Continuous pulsing
-                                    gsap.to(reveal.container, {
-                                        duration: 0.5,
-                                        scale: 1.05,
-                                        ease: "power2.inOut",
-                                        yoyo: true,
-                                        repeat: -1,
-                                        delay: 0.6 + (index * 0.1)
-                                    });
-                                } else {
-                                    console.log('⚠️ GSAP not available, using fallback');
-                                    reveal.container.style.opacity = '1';
-                                    reveal.container.style.transform = 'scale(1)';
-                                }
-                            });
-                        });
-
-                        element.addEventListener('mouseleave', function(e) {
-                            console.log('🎨 HOVER LEAVE - Hiding crazy hover reveal animation', e.target.textContent);
-
-                            // Hide all reveals with exit animation
-                            hoverReveals.forEach((reveal, index) => {
-                                console.log(`🚪 Hiding reveal ${index + 1}`);
+                        initEvents() {
+                            this.positionElement = (ev) => {
+                                const mousePos = getMousePos(ev);
+                                const docScrolls = {
+                                    left: window.pageXOffset || document.documentElement.scrollLeft,
+                                    top: window.pageYOffset || document.documentElement.scrollTop
+                                };
 
                                 if (typeof gsap !== 'undefined') {
-                                    // Kill any existing animations
-                                    gsap.killTweensOf(reveal.inner);
-                                    gsap.killTweensOf(reveal.img);
-                                    gsap.killTweensOf(reveal.container);
-
-                                    // Simple exit animation
-                                    gsap.to(reveal.inner, {
-                                        duration: 0.4,
-                                        ease: "power2.in",
-                                        x: index % 2 === 0 ? '100%' : '-100%',
-                                        rotation: (index - 2) * 20
-                                    });
-
-                                    gsap.to(reveal.img, {
-                                        duration: 0.4,
-                                        ease: "power2.in",
-                                        x: index % 2 === 0 ? '-100%' : '100%',
-                                        scale: 0.7
-                                    });
-
-                                    gsap.to(reveal.container, {
-                                        duration: 0.4,
-                                        ease: "power2.in",
-                                        opacity: 0
+                                    gsap.to(this.DOM.reveal, {
+                                        duration: 0.7,
+                                        top: `${mousePos.y - (this.DOM.reveal.offsetHeight * 0.5) - docScrolls.top}px`,
+                                        left: `${mousePos.x - (this.DOM.reveal.offsetWidth * 0.5) - docScrolls.left}px`,
+                                        ease: "power4.out"
                                     });
                                 } else {
-                                    // Fallback without GSAP
-                                    reveal.container.style.opacity = '0';
+                                    this.DOM.reveal.style.top = `${mousePos.y - (this.DOM.reveal.offsetHeight * 0.5) - docScrolls.top}px`;
+                                    this.DOM.reveal.style.left = `${mousePos.x - (this.DOM.reveal.offsetWidth * 0.5) - docScrolls.left}px`;
                                 }
+                            };
+
+                            this.mouseenterFn = (ev) => {
+                                console.log('🎨 BENNET HOVER ENTER!', ev.target.textContent);
+                                this.positionElement(ev);
+                                this.showImage();
+                            };
+
+                            this.mousemoveFn = ev => requestAnimationFrame(() => {
+                                this.positionElement(ev);
                             });
-                        });
+
+                            this.mouseleaveFn = () => {
+                                console.log('🎨 BENNET HOVER LEAVE!');
+                                this.hideImage();
+                            };
+
+                            this.DOM.el.addEventListener('mouseenter', this.mouseenterFn);
+                            this.DOM.el.addEventListener('mousemove', this.mousemoveFn);
+                            this.DOM.el.addEventListener('mouseleave', this.mouseleaveFn);
+                        }
+
+                        showImage() {
+                            if (typeof gsap !== 'undefined') {
+                                gsap.killTweensOf(this.DOM.revealInner);
+                                gsap.killTweensOf(this.DOM.revealImg);
+
+                                gsap.timeline({
+                                    onStart: () => {
+                                        this.DOM.reveal.style.opacity = 1;
+                                        gsap.set(this.DOM.el, {zIndex: 1000});
+                                    }
+                                })
+                                .add('begin')
+                                .add(gsap.to(this.DOM.revealInner, {
+                                    duration: 0.4,
+                                    ease: "sine.out",
+                                    startAt: {x: '-100%'},
+                                    x: '0%'
+                                }), 'begin')
+                                .add(gsap.to(this.DOM.revealImg, {
+                                    duration: 0.4,
+                                    ease: "sine.out",
+                                    startAt: {x: '100%'},
+                                    x: '0%'
+                                }), 'begin');
+                            } else {
+                                // Fallback without GSAP
+                                this.DOM.reveal.style.opacity = '1';
+                            }
+                        }
+
+                        hideImage() {
+                            if (typeof gsap !== 'undefined') {
+                                gsap.killTweensOf(this.DOM.revealInner);
+                                gsap.killTweensOf(this.DOM.revealImg);
+
+                                gsap.timeline({
+                                    onComplete: () => {
+                                        gsap.set(this.DOM.el, {zIndex: ''});
+                                        gsap.set(this.DOM.reveal, {opacity: 0});
+                                    }
+                                })
+                                .add('begin')
+                                .add(gsap.to(this.DOM.revealInner, {
+                                    duration: 0.3,
+                                    ease: "sine.out",
+                                    x: '100%'
+                                }), 'begin')
+                                .add(gsap.to(this.DOM.revealImg, {
+                                    duration: 0.3,
+                                    ease: "sine.out",
+                                    x: '-100%'
+                                }), 'begin');
+                            } else {
+                                // Fallback without GSAP
+                                this.DOM.reveal.style.opacity = '0';
+                            }
+                        }
+                    }
+
+                    // Initialize Bennet-style hover reveal for mydayhover elements
+                    mydayHoverElements.forEach(element => {
+                        new BennetHoverReveal(element);
+                        console.log('✅ Bennet hover reveal initialized for:', element.textContent);
                     });
 
                     // Click effect
