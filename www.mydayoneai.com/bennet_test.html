@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MyDayOne | Bennet-Style Hover Test</title>
+    
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        /* Bennet-Style Hero Interaction */
+        #hero-interaction {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 0;
+            box-sizing: border-box;
+            padding-top: 140px;
+            padding-bottom: 140px;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .hero-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .hero-column.col-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .col-reverse .hero-column, 
+        .col-reverse .hero-column.col-right {
+            flex-direction: column-reverse;
+        }
+
+        .col-img-wrapper {
+            width: 25%;
+            height: auto;
+            border-radius: 6px;
+            overflow: hidden;
+            opacity: 0;
+            transform-origin: center center;
+            transition: all 0.3s ease-in 0s;
+        }
+
+        .hero-column .col-img-wrapper.small-img {
+            width: 15%;
+            border-radius: 4px;
+        }
+
+        .hero-column .col-img-wrapper.large-img {
+            width: 25%;
+        }
+
+        .col-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-position: center;
+            object-fit: cover;
+        }
+
+        /* Left Column Animations */
+        .col-left .col-img-wrapper.small-img {
+            transform: scale(0);
+            transform-origin: center center;
+            margin-left: 15%;
+        }
+
+        .active .col-left .col-img-wrapper.small-img {
+            opacity: 1;
+            transform: scale(1);
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .col-left .col-img-wrapper.large-img {
+            transform: scale(0.5) translateX(-200%) rotate(90deg);
+            transform-origin: center left;
+        }
+
+        .active .col-left .col-img-wrapper.large-img {
+            opacity: 1;
+            transform: scale(1) translateX(0) rotate(-10deg);
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Right Column Animations */
+        .col-right .col-img-wrapper.small-img {
+            transform: scale(0);
+            transform-origin: center center;
+            margin-right: 15%;
+        }
+
+        .active .col-right .col-img-wrapper.small-img {
+            opacity: 1;
+            transform: scale(1);
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .col-right .col-img-wrapper.large-img {
+            transform: scale(0.5) translateX(200%) rotate(-90deg);
+            transform-origin: center right;
+        }
+
+        .active .col-right .col-img-wrapper.large-img {
+            opacity: 1;
+            transform: scale(1) translateX(0) rotate(10deg);
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Basic styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 6rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            position: relative;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .instructions {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            opacity: 0.8;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Element -->
+    <div class="logo mydayhover">MyDayOne</div>
+    
+    <!-- Instructions -->
+    <div class="instructions">
+        <p>Hover over the MyDayOne logo to see the Bennet-style animation!</p>
+        <p>Four images should animate in from different sides</p>
+    </div>
+
+    <!-- Bennet-Style Hero Interaction -->
+    <div id="hero-interaction">
+        <div class="hero-column col-left">
+            <div class="col-img-wrapper small-img">
+                <img src="https://i.ibb.co/wvnTg2d/OIP.jpg" alt="MyDayOne Feature 1">
+            </div>
+            <div class="col-img-wrapper large-img">
+                <img src="https://i.ibb.co/wvnTg2d/OIP.jpg" alt="MyDayOne Feature 2">
+            </div>
+        </div>
+        <div class="hero-column col-right">
+            <div class="col-img-wrapper large-img">
+                <img src="https://i.ibb.co/wvnTg2d/OIP.jpg" alt="MyDayOne Feature 3">
+            </div>
+            <div class="col-img-wrapper small-img">
+                <img src="https://i.ibb.co/wvnTg2d/OIP.jpg" alt="MyDayOne Feature 4">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 MyDayOne Bennet-Style Test Loading...');
+            
+            const heroInteraction = document.getElementById('hero-interaction');
+            const mydayHoverElements = document.querySelectorAll('.mydayhover');
+            
+            let hoverTimeout;
+            let changeInstance = true;
+            
+            mydayHoverElements.forEach((element) => {
+                console.log('🎯 Setting up Bennet-style hover for:', element.textContent);
+
+                element.addEventListener('mouseenter', function(e) {
+                    console.log('🎨 BENNET HOVER ENTER!', e.target.textContent);
+                    
+                    clearTimeout(hoverTimeout);
+                    
+                    // Activate the hero interaction with Bennet-style animation
+                    heroInteraction.classList.add('active');
+                });
+
+                element.addEventListener('mouseleave', function() {
+                    console.log('🎨 BENNET HOVER LEAVE!');
+                    
+                    hoverTimeout = setTimeout(() => {
+                        heroInteraction.classList.remove('col-normal', 'col-reverse');
+                        if (changeInstance) {
+                            heroInteraction.classList.add('col-normal');
+                        } else {
+                            heroInteraction.classList.add('col-reverse');
+                        }
+                        changeInstance = !changeInstance;
+                    }, 500);
+                    
+                    heroInteraction.classList.remove('active');
+                });
+
+                console.log('✅ Bennet-style hover effect initialized for:', element.textContent);
+            });
+            
+            console.log('🎯 MyDayOne Bennet-Style Test initialized successfully!');
+        });
+    </script>
+</body>
+</html>

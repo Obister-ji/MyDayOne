@@ -40,50 +40,121 @@
             }
         }
 
-        /* Multiple Scattered Images Effect (Like Reference) */
-        .hover-image {
+        /* Bennet-Style Hero Interaction */
+        #hero-interaction {
             position: fixed;
-            width: 150px;
-            height: 200px;
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 0;
+            box-sizing: border-box;
+            padding-top: 140px;
+            padding-bottom: 140px;
             pointer-events: none;
-            opacity: 0;
-            z-index: 999;
-            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            transition: all 0.3s ease;
-            border: 3px solid #ff0000; /* Debug border to see if images appear */
         }
 
-        /* Force images to be visible for testing */
-        .hover-image.test-visible {
-            opacity: 1 !important;
-            position: fixed;
-            z-index: 9999;
+        .hero-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
         }
 
-        .hover-image-1 {
-            transform: rotate(-8deg);
-            width: 140px;
-            height: 180px;
+        .hero-column.col-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
         }
-        .hover-image-2 {
-            transform: rotate(5deg);
-            width: 160px;
-            height: 220px;
+
+        .col-reverse .hero-column,
+        .col-reverse .hero-column.col-right {
+            flex-direction: column-reverse;
         }
-        .hover-image-3 {
-            transform: rotate(-3deg);
-            width: 130px;
-            height: 170px;
+
+        .col-img-wrapper::before {
+            float: left;
+            padding-top: 100%;
+            content: "";
         }
-        .hover-image-4 {
-            transform: rotate(7deg);
-            width: 155px;
-            height: 210px;
+
+        .col-img-wrapper {
+            width: 25%;
+            height: auto;
+            border-radius: 6px;
+            overflow: hidden;
+            opacity: 0;
+            transform-origin: center center;
+            transition: all 0.3s ease-in 0s;
+        }
+
+        .hero-column .col-img-wrapper.small-img {
+            width: 15%;
+            border-radius: 4px;
+        }
+
+        .hero-column .col-img-wrapper.large-img {
+            width: 25%;
+        }
+
+        .col-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-position: center;
+            object-fit: cover;
+        }
+
+        /* Left Column Animations */
+        .col-left .col-img-wrapper.small-img {
+            transform: scale(0);
+            transform-origin: center center;
+            margin-left: 15%;
+        }
+
+        .active .col-left .col-img-wrapper.small-img {
+            opacity: 1;
+            transform: scale(1);
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .col-left .col-img-wrapper.large-img {
+            transform: scale(0.5) translateX(-200%) rotate(90deg);
+            transform-origin: center left;
+        }
+
+        .active .col-left .col-img-wrapper.large-img {
+            opacity: 1;
+            transform: scale(1) translateX(0) rotate(-10deg);
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Right Column Animations */
+        .col-right .col-img-wrapper.small-img {
+            transform: scale(0);
+            transform-origin: center center;
+            margin-right: 15%;
+        }
+
+        .active .col-right .col-img-wrapper.small-img {
+            opacity: 1;
+            transform: scale(1);
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .col-right .col-img-wrapper.large-img {
+            transform: scale(0.5) translateX(200%) rotate(-90deg);
+            transform-origin: center right;
+        }
+
+        .active .col-right .col-img-wrapper.large-img {
+            opacity: 1;
+            transform: scale(1) translateX(0) rotate(10deg);
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         /* Mydayhover class for trigger elements */
@@ -261,22 +332,30 @@
             .logo {
                 font-size: 2.5rem;
             }
-            
+
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
+
             .nav {
                 gap: 15px;
             }
-            
+
             .nav a {
                 padding: 12px 20px;
                 font-size: 0.9rem;
             }
 
-            .hover-reveal {
-                display: none; /* Hide on mobile */
+            #hero-interaction {
+                display: none; /* Hide Bennet effect on mobile */
+            }
+
+            .hero-column .col-img-wrapper.small-img {
+                width: 38%;
+            }
+
+            .hero-column .col-img-wrapper.large-img {
+                width: 48%;
             }
         }
     </style>
@@ -329,88 +408,51 @@
             <p>&copy; 2024 MyDayOne. All rights reserved. | Custom Cursor + Hover Reveal Animation Demo</p>
         </footer>
     </div>
-    <!-- Multiple Scattered Images (Reference Style) -->
-    <div class="hover-image hover-image-1" id="hoverImage1"></div>
-    <div class="hover-image hover-image-2" id="hoverImage2"></div>
-    <div class="hover-image hover-image-3" id="hoverImage3"></div>
-    <div class="hover-image hover-image-4" id="hoverImage4"></div>
+    <!-- Bennet-Style Hero Interaction -->
+    <div id="hero-interaction">
+        <div class="hero-column col-left">
+            <div class="col-img-wrapper small-img">
+                <img src="https://i.ibb.co/wvnTg2d/OIP.jpg" alt="MyDayOne Feature 1">
+            </div>
+            <div class="col-img-wrapper large-img">
+                <img src="https://i.ibb.co/wvnTg2d/OIP.jpg" alt="MyDayOne Feature 2">
+            </div>
+        </div>
+        <div class="hero-column col-right">
+            <div class="col-img-wrapper large-img">
+                <img src="https://i.ibb.co/wvnTg2d/OIP.jpg" alt="MyDayOne Feature 3">
+            </div>
+            <div class="col-img-wrapper small-img">
+                <img src="https://i.ibb.co/wvnTg2d/OIP.jpg" alt="MyDayOne Feature 4">
+            </div>
+        </div>
+    </div>
 
     <!-- Combined JavaScript for Custom Cursor + Hover Reveal -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🎯 MyDayOne Complete Animation Loading...');
+            console.log('🎯 MyDayOne Bennet-Style Animation Loading...');
             console.log('GSAP available:', typeof gsap !== 'undefined');
 
             // Check if device supports hover (desktop)
             if (window.matchMedia('(min-width: 768px)').matches) {
                 const cursor = document.getElementById('customCursor');
-
-                // Get scattered hover images (Reference Style)
-                const hoverImages = [
-                    document.getElementById('hoverImage1'),
-                    document.getElementById('hoverImage2'),
-                    document.getElementById('hoverImage3'),
-                    document.getElementById('hoverImage4')
-                ];
-
-                // Images to use - Your specific image for all 4
-                const images = [
-                    'https://i.ibb.co/wvnTg2d/OIP.jpg',
-                    'https://i.ibb.co/wvnTg2d/OIP.jpg',
-                    'https://i.ibb.co/wvnTg2d/OIP.jpg',
-                    'https://i.ibb.co/wvnTg2d/OIP.jpg'
-                ];
+                const heroInteraction = document.getElementById('hero-interaction');
 
                 console.log('🔍 Checking elements...');
                 console.log('Cursor:', cursor);
-                console.log('Hover images:', hoverImages);
+                console.log('Hero Interaction:', heroInteraction);
 
-                if (cursor && hoverImages.every(img => img !== null)) {
+                if (cursor && heroInteraction) {
                     console.log('✅ All elements found and valid');
 
                     // Make cursor visible
                     cursor.style.display = 'block';
                     cursor.style.opacity = '1';
 
-                    // Set images and add test visibility
-                    hoverImages.forEach((img, index) => {
-                        img.style.backgroundImage = `url(${images[index]})`;
-                        console.log(`🖼️ Set image ${index + 1}: ${images[index]}`);
-
-                        // TEST: Make images visible immediately to check if they load
-                        img.style.left = (100 + index * 180) + 'px';
-                        img.style.top = '50px';
-                        img.style.opacity = '1';
-                        img.classList.add('test-visible');
-
-                        console.log(`🔍 Image ${index + 1} positioned at:`, img.style.left, img.style.top);
-                    });
-
-                    // Add a button to toggle test visibility
-                    const toggleBtn = document.createElement('button');
-                    toggleBtn.textContent = 'Toggle Images Test';
-                    toggleBtn.style.position = 'fixed';
-                    toggleBtn.style.top = '10px';
-                    toggleBtn.style.right = '10px';
-                    toggleBtn.style.zIndex = '10000';
-                    toggleBtn.style.padding = '10px';
-                    toggleBtn.style.background = '#ff0000';
-                    toggleBtn.style.color = 'white';
-                    toggleBtn.style.border = 'none';
-                    toggleBtn.style.borderRadius = '5px';
-                    toggleBtn.style.fontSize = '12px';
-                    toggleBtn.onclick = function() {
-                        hoverImages.forEach(img => {
-                            if (img.classList.contains('test-visible')) {
-                                img.classList.remove('test-visible');
-                                img.style.opacity = '0';
-                            } else {
-                                img.classList.add('test-visible');
-                                img.style.opacity = '1';
-                            }
-                        });
-                    };
-                    document.body.appendChild(toggleBtn);
+                    // Bennet-Style Hero Interaction Implementation
+                    let hoverTimeout;
+                    let changeInstance = true;
 
                     const hoverElements = document.querySelectorAll('.cursor-hover');
                     const textHoverElements = document.querySelectorAll('.cursor-text-hover');
@@ -419,21 +461,60 @@
                     console.log(`Found ${hoverElements.length} hover elements, ${textHoverElements.length} text hover elements, ${mydayHoverElements.length} mydayhover elements`);
                     console.log('MyDay hover elements:', mydayHoverElements);
 
-                    // Add visual indicator to mydayhover elements for debugging
-                    mydayHoverElements.forEach((el, index) => {
-                        console.log(`MyDay element ${index}:`, el.textContent, el.classList);
-                        el.style.border = '2px dashed rgba(0, 255, 0, 0.5)'; // Green debug border
+                    // Bennet-style hover effect for MyDayOne logo
+                    mydayHoverElements.forEach((element, elementIndex) => {
+                        console.log(`🎯 Setting up Bennet-style hover for element ${elementIndex}:`, element.textContent);
 
-                        // Simple test - change background color on hover to verify detection
-                        el.addEventListener('mouseenter', function() {
-                            console.log('🔥 SIMPLE HOVER TEST - Element detected!', this.textContent);
-                            this.style.backgroundColor = 'rgba(0, 255, 0, 0.2)';
+                        element.addEventListener('mouseenter', function(e) {
+                            console.log('🎨 BENNET HOVER ENTER!', e.target.textContent);
+
+                            clearTimeout(hoverTimeout);
+
+                            // Activate the hero interaction with Bennet-style animation
+                            heroInteraction.classList.add('active');
+
+                            // Enhanced cursor effect
+                            if (typeof gsap !== 'undefined') {
+                                gsap.to(cursor, {
+                                    duration: 0.3,
+                                    borderWidth: '2px',
+                                    scale: 1.4,
+                                    borderColor: "rgba(112, 48, 160, 0)",
+                                    backgroundColor: "rgba(112, 48, 160, 0.1)",
+                                    ease: 'power2.out'
+                                });
+                            }
                         });
 
-                        el.addEventListener('mouseleave', function() {
-                            console.log('🔥 SIMPLE HOVER TEST - Mouse left!', this.textContent);
-                            this.style.backgroundColor = '';
+                        element.addEventListener('mouseleave', function() {
+                            console.log('🎨 BENNET HOVER LEAVE!');
+
+                            hoverTimeout = setTimeout(() => {
+                                heroInteraction.classList.remove('col-normal', 'col-reverse');
+                                if (changeInstance) {
+                                    heroInteraction.classList.add('col-normal');
+                                } else {
+                                    heroInteraction.classList.add('col-reverse');
+                                }
+                                changeInstance = !changeInstance;
+                            }, 500);
+
+                            heroInteraction.classList.remove('active');
+
+                            // Reset cursor
+                            if (typeof gsap !== 'undefined') {
+                                gsap.to(cursor, {
+                                    duration: 0.3,
+                                    borderWidth: '4px',
+                                    scale: 0.5,
+                                    borderColor: '#999999',
+                                    backgroundColor: 'transparent',
+                                    ease: 'power2.out'
+                                });
+                            }
                         });
+
+                        console.log('✅ Bennet-style hover effect initialized for:', element.textContent);
                     });
 
                     let mouseX = 0;
@@ -441,26 +522,10 @@
                     let cursorX = 0;
                     let cursorY = 0;
 
-                    // Mouse move event
+                    // Mouse move event for cursor tracking
                     document.addEventListener('mousemove', function(e) {
                         mouseX = e.clientX;
                         mouseY = e.clientY;
-
-                        // Update hover reveal positions with different offsets for crazy effect
-                        hoverReveals.forEach((reveal, index) => {
-                            const offsetX = (index - 1.5) * 80; // Spread them out
-                            const offsetY = (index % 2 === 0 ? -50 : 50) + (index * 20); // Stagger vertically
-
-                            if (typeof gsap !== 'undefined') {
-                                gsap.set(reveal.container, {
-                                    x: mouseX + offsetX - (reveal.container.offsetWidth * 0.5),
-                                    y: mouseY + offsetY - (reveal.container.offsetHeight * 0.5)
-                                });
-                            } else {
-                                reveal.container.style.left = (mouseX + offsetX - (reveal.container.offsetWidth * 0.5)) + 'px';
-                                reveal.container.style.top = (mouseY + offsetY - (reveal.container.offsetHeight * 0.5)) + 'px';
-                            }
-                        });
                     });
 
                     // Smooth cursor animation
@@ -559,126 +624,7 @@
                         });
                     });
 
-                    // Mouse tracking for scattered images
-                    let mouseX = 0;
-                    let mouseY = 0;
-
-                    document.addEventListener('mousemove', function(e) {
-                        mouseX = e.clientX;
-                        mouseY = e.clientY;
-                    });
-
-                    // Scattered Images Hover Effect (Like Reference Image)
-                    mydayHoverElements.forEach((element, elementIndex) => {
-                        console.log(`🎯 Setting up hover for element ${elementIndex}:`, element.textContent);
-
-                        element.addEventListener('mouseenter', function(e) {
-                            console.log('🎨 SCATTERED IMAGES HOVER ENTER!', e.target.textContent);
-                            console.log('🖱️ Mouse position:', e.clientX, e.clientY);
-                            console.log('🖼️ Available images:', hoverImages);
-
-                            // Position images scattered around the cursor area
-                            const positions = [
-                                { x: -200, y: -100 }, // Top left
-                                { x: 150, y: -80 },   // Top right
-                                { x: -180, y: 120 },  // Bottom left
-                                { x: 180, y: 100 }    // Bottom right
-                            ];
-
-                            hoverImages.forEach((img, index) => {
-                                if (!img) {
-                                    console.error(`❌ Image ${index + 1} not found!`);
-                                    return;
-                                }
-
-                                const pos = positions[index];
-                                const finalX = e.clientX + pos.x;
-                                const finalY = e.clientY + pos.y;
-
-                                console.log(`🖼️ Positioning image ${index + 1} at:`, finalX, finalY);
-
-                                // Position relative to cursor
-                                img.style.left = finalX + 'px';
-                                img.style.top = finalY + 'px';
-
-                                if (typeof gsap !== 'undefined') {
-                                    console.log(`✨ Animating image ${index + 1} with GSAP`);
-                                    // Animate in with staggered timing
-                                    gsap.fromTo(img, {
-                                        opacity: 0,
-                                        scale: 0.5,
-                                        rotation: (index - 2) * 20
-                                    }, {
-                                        duration: 0.6 + (index * 0.1),
-                                        opacity: 1,
-                                        scale: 1,
-                                        rotation: (index - 2) * 8,
-                                        ease: "back.out(1.7)",
-                                        delay: index * 0.1
-                                    });
-                                } else {
-                                    console.log(`⚠️ Using fallback animation for image ${index + 1}`);
-                                    // Fallback without GSAP
-                                    img.style.opacity = '1';
-                                    img.style.transform = 'scale(1)';
-                                }
-                            });
-                        });
-
-                        element.addEventListener('mousemove', function(e) {
-                            // Update positions as mouse moves
-                            const positions = [
-                                { x: -200, y: -100 }, // Top left
-                                { x: 150, y: -80 },   // Top right
-                                { x: -180, y: 120 },  // Bottom left
-                                { x: 180, y: 100 }    // Bottom right
-                            ];
-
-                            hoverImages.forEach((img, index) => {
-                                const pos = positions[index];
-
-                                if (typeof gsap !== 'undefined') {
-                                    gsap.to(img, {
-                                        duration: 0.3,
-                                        left: (e.clientX + pos.x) + 'px',
-                                        top: (e.clientY + pos.y) + 'px',
-                                        ease: "power2.out"
-                                    });
-                                } else {
-                                    img.style.left = (e.clientX + pos.x) + 'px';
-                                    img.style.top = (e.clientY + pos.y) + 'px';
-                                }
-                            });
-                        });
-
-                        element.addEventListener('mouseleave', function(e) {
-                            console.log('🎨 SCATTERED IMAGES HOVER LEAVE!');
-
-                            hoverImages.forEach((img, index) => {
-                                if (!img) {
-                                    console.error(`❌ Image ${index + 1} not found for hiding!`);
-                                    return;
-                                }
-
-                                console.log(`🚪 Hiding image ${index + 1}`);
-
-                                if (typeof gsap !== 'undefined') {
-                                    gsap.to(img, {
-                                        duration: 0.4,
-                                        opacity: 0,
-                                        scale: 0.3,
-                                        rotation: (index - 2) * 30,
-                                        ease: "power2.in",
-                                        delay: index * 0.05
-                                    });
-                                } else {
-                                    img.style.opacity = '0';
-                                }
-                            });
-                        });
-
-                        console.log('✅ Scattered images hover effect initialized for:', element.textContent);
-                    });
+                    // Additional cursor and click effects
 
                     // Click effect
                     document.addEventListener('mousedown', function() {
@@ -701,7 +647,7 @@
                         }
                     });
 
-                    console.log('🎯 MyDayOne Complete Animation initialized successfully!');
+                    console.log('🎯 MyDayOne Bennet-Style Animation initialized successfully!');
                 } else {
                     console.error('❌ Required elements not found');
                 }
