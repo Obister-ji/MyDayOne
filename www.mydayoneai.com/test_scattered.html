@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scattered Images Test</title>
+    
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            text-align: center;
+        }
+
+        .test-container {
+            padding: 100px 20px;
+        }
+
+        .mydayone-logo {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 50px 0;
+            padding: 20px;
+            border: 3px solid #ff0000;
+            display: inline-block;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+
+        .mydayone-logo:hover {
+            background: rgba(255, 255, 0, 0.3) !important;
+        }
+
+        /* Scattered Images */
+        .hover-image {
+            position: fixed;
+            width: 150px;
+            height: 200px;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 999;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            border: 3px solid #ff0000; /* Debug border */
+        }
+
+        .hover-image-1 { 
+            transform: rotate(-8deg);
+            width: 140px;
+            height: 180px;
+        }
+        .hover-image-2 { 
+            transform: rotate(5deg);
+            width: 160px;
+            height: 220px;
+        }
+        .hover-image-3 { 
+            transform: rotate(-3deg);
+            width: 130px;
+            height: 170px;
+        }
+        .hover-image-4 { 
+            transform: rotate(7deg);
+            width: 155px;
+            height: 210px;
+        }
+
+        .instructions {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .debug-info {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            font-family: monospace;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Scattered Images Hover Test</h1>
+        
+        <div class="instructions">
+            <h3>🎯 Test Instructions:</h3>
+            <p>1. You should see a RED BORDER around "MyDayOne" below</p>
+            <p>2. Hover over "MyDayOne" - it should turn YELLOW</p>
+            <p>3. 4 images should appear scattered around cursor (with red borders)</p>
+            <p>4. Check console (F12) for debug messages</p>
+        </div>
+
+        <div class="mydayone-logo mydayhover" id="testLogo">MyDayOne</div>
+
+        <div class="debug-info" id="debugInfo">
+            <strong>Debug Info:</strong><br>
+            <span id="debugText">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Scattered Images -->
+    <div class="hover-image hover-image-1" id="hoverImage1"></div>
+    <div class="hover-image hover-image-2" id="hoverImage2"></div>
+    <div class="hover-image hover-image-3" id="hoverImage3"></div>
+    <div class="hover-image hover-image-4" id="hoverImage4"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Scattered Images Test Loading!');
+            
+            const debugText = document.getElementById('debugText');
+            const testLogo = document.getElementById('testLogo');
+            
+            // Get scattered hover images
+            const hoverImages = [
+                document.getElementById('hoverImage1'),
+                document.getElementById('hoverImage2'),
+                document.getElementById('hoverImage3'),
+                document.getElementById('hoverImage4')
+            ];
+
+            // Images to use
+            const images = [
+                'https://picsum.photos/300/400?random=1',
+                'https://picsum.photos/300/400?random=2',
+                'https://picsum.photos/300/400?random=3',
+                'https://picsum.photos/300/400?random=4'
+            ];
+            
+            // Update debug info
+            debugText.innerHTML = `
+                GSAP Available: ${typeof gsap !== 'undefined'}<br>
+                Test Logo Found: ${testLogo !== null}<br>
+                Images Found: ${hoverImages.filter(img => img !== null).length}/4<br>
+                Current Time: ${new Date().toLocaleTimeString()}
+            `;
+
+            console.log('🖼️ Images to use:', images);
+            console.log('📦 Hover images:', hoverImages);
+
+            // Set images
+            hoverImages.forEach((img, index) => {
+                if (img) {
+                    img.style.backgroundImage = `url(${images[index]})`;
+                    console.log(`✅ Set image ${index + 1}: ${images[index]}`);
+                } else {
+                    console.error(`❌ Image ${index + 1} element not found!`);
+                }
+            });
+
+            // Hover effect
+            if (testLogo) {
+                testLogo.addEventListener('mouseenter', function(e) {
+                    console.log('🎨 SCATTERED HOVER ENTER!');
+                    
+                    // Position images scattered around the cursor area
+                    const positions = [
+                        { x: -200, y: -100 }, // Top left
+                        { x: 150, y: -80 },   // Top right
+                        { x: -180, y: 120 },  // Bottom left
+                        { x: 180, y: 100 }    // Bottom right
+                    ];
+
+                    hoverImages.forEach((img, index) => {
+                        if (!img) return;
+                        
+                        const pos = positions[index];
+                        const finalX = e.clientX + pos.x;
+                        const finalY = e.clientY + pos.y;
+                        
+                        console.log(`🖼️ Positioning image ${index + 1} at:`, finalX, finalY);
+                        
+                        img.style.left = finalX + 'px';
+                        img.style.top = finalY + 'px';
+                        
+                        if (typeof gsap !== 'undefined') {
+                            gsap.fromTo(img, {
+                                opacity: 0,
+                                scale: 0.5,
+                                rotation: (index - 2) * 20
+                            }, {
+                                duration: 0.6 + (index * 0.1),
+                                opacity: 1,
+                                scale: 1,
+                                rotation: (index - 2) * 8,
+                                ease: "back.out(1.7)",
+                                delay: index * 0.1
+                            });
+                        } else {
+                            img.style.opacity = '1';
+                            img.style.transform = 'scale(1)';
+                        }
+                    });
+                });
+
+                testLogo.addEventListener('mouseleave', function() {
+                    console.log('🎨 SCATTERED HOVER LEAVE!');
+                    
+                    hoverImages.forEach((img, index) => {
+                        if (!img) return;
+                        
+                        if (typeof gsap !== 'undefined') {
+                            gsap.to(img, {
+                                duration: 0.4,
+                                opacity: 0,
+                                scale: 0.3,
+                                rotation: (index - 2) * 30,
+                                ease: "power2.in",
+                                delay: index * 0.05
+                            });
+                        } else {
+                            img.style.opacity = '0';
+                        }
+                    });
+                });
+            }
+
+            console.log('✅ Scattered images test setup complete!');
+        });
+    </script>
+</body>
+</html>

@@ -55,6 +55,7 @@
             background-position: center center;
             background-repeat: no-repeat;
             transition: all 0.3s ease;
+            border: 3px solid #ff0000; /* Debug border to see if images appear */
         }
 
         .hover-image-1 {
@@ -527,9 +528,13 @@
                     });
 
                     // Scattered Images Hover Effect (Like Reference Image)
-                    mydayHoverElements.forEach(element => {
+                    mydayHoverElements.forEach((element, elementIndex) => {
+                        console.log(`🎯 Setting up hover for element ${elementIndex}:`, element.textContent);
+
                         element.addEventListener('mouseenter', function(e) {
                             console.log('🎨 SCATTERED IMAGES HOVER ENTER!', e.target.textContent);
+                            console.log('🖱️ Mouse position:', e.clientX, e.clientY);
+                            console.log('🖼️ Available images:', hoverImages);
 
                             // Position images scattered around the cursor area
                             const positions = [
@@ -540,13 +545,23 @@
                             ];
 
                             hoverImages.forEach((img, index) => {
+                                if (!img) {
+                                    console.error(`❌ Image ${index + 1} not found!`);
+                                    return;
+                                }
+
                                 const pos = positions[index];
+                                const finalX = e.clientX + pos.x;
+                                const finalY = e.clientY + pos.y;
+
+                                console.log(`🖼️ Positioning image ${index + 1} at:`, finalX, finalY);
 
                                 // Position relative to cursor
-                                img.style.left = (mouseX + pos.x) + 'px';
-                                img.style.top = (mouseY + pos.y) + 'px';
+                                img.style.left = finalX + 'px';
+                                img.style.top = finalY + 'px';
 
                                 if (typeof gsap !== 'undefined') {
+                                    console.log(`✨ Animating image ${index + 1} with GSAP`);
                                     // Animate in with staggered timing
                                     gsap.fromTo(img, {
                                         opacity: 0,
@@ -561,6 +576,7 @@
                                         delay: index * 0.1
                                     });
                                 } else {
+                                    console.log(`⚠️ Using fallback animation for image ${index + 1}`);
                                     // Fallback without GSAP
                                     img.style.opacity = '1';
                                     img.style.transform = 'scale(1)';
@@ -598,6 +614,13 @@
                             console.log('🎨 SCATTERED IMAGES HOVER LEAVE!');
 
                             hoverImages.forEach((img, index) => {
+                                if (!img) {
+                                    console.error(`❌ Image ${index + 1} not found for hiding!`);
+                                    return;
+                                }
+
+                                console.log(`🚪 Hiding image ${index + 1}`);
+
                                 if (typeof gsap !== 'undefined') {
                                     gsap.to(img, {
                                         duration: 0.4,
