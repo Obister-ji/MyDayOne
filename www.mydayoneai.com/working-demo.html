@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyDayOne - Working Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav a:hover {
+            opacity: 0.7;
+        }
+
+        .main {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Hover Effect Styles */
+        .hover-image {
+            position: fixed;
+            width: 150px;
+            height: 200px;
+            background-image: url('https://i.ibb.co/wvnTg2d/OIP.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+            opacity: 0;
+            z-index: 999;
+        }
+
+        .hover-image-1 { 
+            transform: rotate(-8deg);
+            width: 140px;
+            height: 180px;
+        }
+        .hover-image-2 { 
+            transform: rotate(5deg);
+            width: 160px;
+            height: 220px;
+        }
+        .hover-image-3 { 
+            transform: rotate(-3deg);
+            width: 130px;
+            height: 170px;
+        }
+        .hover-image-4 { 
+            transform: rotate(7deg);
+            width: 155px;
+            height: 210px;
+        }
+
+        .demo-note {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 255, 0, 0.8);
+            color: black;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-note">
+        ✅ Working Demo - Hover over "MyDayOne" logo!
+    </div>
+
+    <header class="header">
+        <a href="/" class="logo mydayhover">MyDayOne</a>
+        <nav class="nav">
+            <a href="/about">About</a>
+            <a href="/services">Services</a>
+            <a href="/contact">Contact</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <h1 class="title">Welcome to MyDayOne</h1>
+        <p class="subtitle">Experience the amazing hover effect</p>
+        <button class="cta-button">Get Started</button>
+    </main>
+
+    <!-- Hover Images -->
+    <div class="hover-image hover-image-1" id="hoverImage1"></div>
+    <div class="hover-image hover-image-2" id="hoverImage2"></div>
+    <div class="hover-image hover-image-3" id="hoverImage3"></div>
+    <div class="hover-image hover-image-4" id="hoverImage4"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 MyDayOne Working Demo Loaded!');
+            
+            // Get elements
+            const logo = document.querySelector('.mydayhover');
+            const hoverImages = [
+                document.getElementById('hoverImage1'),
+                document.getElementById('hoverImage2'),
+                document.getElementById('hoverImage3'),
+                document.getElementById('hoverImage4')
+            ];
+
+            // Positions for scattered effect
+            const positions = [
+                { x: -200, y: -100 }, // Top left
+                { x: 150, y: -80 },   // Top right
+                { x: -180, y: 120 },  // Bottom left
+                { x: 180, y: 100 }    // Bottom right
+            ];
+
+            // Add hover effect
+            logo.addEventListener('mouseenter', function(e) {
+                console.log('🎨 HOVER DETECTED!');
+                
+                hoverImages.forEach((img, index) => {
+                    const pos = positions[index];
+                    img.style.left = (e.clientX + pos.x) + 'px';
+                    img.style.top = (e.clientY + pos.y) + 'px';
+                    
+                    gsap.fromTo(img, {
+                        opacity: 0,
+                        scale: 0.5,
+                        rotation: (index - 2) * 20
+                    }, {
+                        duration: 0.6 + (index * 0.1),
+                        opacity: 1,
+                        scale: 1,
+                        rotation: (index - 2) * 8,
+                        ease: "back.out(1.7)",
+                        delay: index * 0.1
+                    });
+                });
+            });
+
+            logo.addEventListener('mousemove', function(e) {
+                hoverImages.forEach((img, index) => {
+                    const pos = positions[index];
+                    gsap.to(img, {
+                        duration: 0.3,
+                        left: (e.clientX + pos.x) + 'px',
+                        top: (e.clientY + pos.y) + 'px',
+                        ease: "power2.out"
+                    });
+                });
+            });
+
+            logo.addEventListener('mouseleave', function() {
+                console.log('🎨 HOVER LEFT!');
+                
+                hoverImages.forEach((img, index) => {
+                    gsap.to(img, {
+                        duration: 0.4,
+                        opacity: 0,
+                        scale: 0.3,
+                        rotation: (index - 2) * 30,
+                        ease: "power2.in",
+                        delay: index * 0.05
+                    });
+                });
+            });
+
+            console.log('✅ Hover effect ready! Hover over the MyDayOne logo!');
+        });
+    </script>
+</body>
+</html>
